@@ -25,7 +25,4 @@ def get_gov_bond_data():
     return gov_bond_index_data
 
 
-print(get_telbond_data(bond_number='20'))
-print(get_telbond_data(bond_number='40'))
-print(get_gov_bond_data())
 
