@@ -97,7 +97,6 @@ def get_htdata_daily(record_num):
 
             if daily is daily_il:
                 index_data = get_tase_data(index).iloc[0:record_num]
-                index_data['TradeDate'] = pd.to_datetime(index_data['TradeDate'])
                 index_data = index_data.set_index('TradeDate')
                 index_df = pd.DataFrame({index: index_data['BaseRate']})
 
@@ -124,3 +123,4 @@ def get_htdata_daily(record_num):
     print(daily_us_df.sort_index(ascending=False))
     print(daily_uk_df.sort_index(ascending=False))
 
+get_htdata_daily(7)
