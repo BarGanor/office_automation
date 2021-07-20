@@ -120,7 +120,7 @@ def get_htdata_daily(record_num):
 
                 daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
-    print(daily_il_df.sort_index(ascending=False))
+    print(daily_il_df)
     print(daily_us_df.sort_index(ascending=False))
     print(daily_uk_df.sort_index(ascending=False))
 
