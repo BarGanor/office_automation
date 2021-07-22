@@ -2,6 +2,7 @@ import pandas as pd
 from get_data_from_sites.get_tase_data import *
 from get_data_from_sites.get_investing_data import *
 from get_data_from_sites.get_boi_data import *
+from get_data_from_sites.get_trasury_data import *
 
 
 def get_cdata_daily(record_num):
@@ -52,4 +53,8 @@ def get_htdata_daily(record_num):
 
 
 def get_xdata_daily(record_num):
-    return get_boi_data(8)
+    return get_boi_data(record_num)
+
+
+def get_mdata_daily(record_num):
+    return get_treasury_data(record_num)
