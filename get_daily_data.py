@@ -73,5 +73,5 @@ def get_daily_data(record_num):
     htdata_dict = get_htdata_daily(record_num)
     func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
                  'daily_uk':htdata_dict.get('daily_us'),'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
-    save_xls(dict_df=func_dict, path='temp.xlsx')
+    return func_dict
 
