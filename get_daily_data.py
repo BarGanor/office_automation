@@ -4,6 +4,15 @@ from get_data_from_sites.get_investing_data import *
 from get_data_from_sites.get_boi_data import *
 from get_data_from_sites.get_trasury_data import *
 
+from pandas import ExcelWriter
+
+def save_xls(dict_df, path):
+    writer = ExcelWriter(path)
+    for key in dict_df:
+
+        dict_df[key].to_excel(writer, key)
+
+    writer.save()
 
 def get_cdata_daily(record_num):
     index_names = ['tel bond 20', 'tel bond 40', 'gov bond', 'tel aviv banks', 'tel bond 60']
@@ -49,7 +58,7 @@ def get_htdata_daily(record_num):
                 else:
                     daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
-    return daily_il_df, daily_us_df.sort_index(ascending=False), daily_uk_df.sort_index(ascending=False)
+    return {'daily_il':daily_il_df,'daily_us': daily_us_df.sort_index(ascending=False),'daily_uk': daily_uk_df.sort_index(ascending=False)}
 
 
 def get_xdata_daily(record_num):
@@ -58,3 +67,11 @@ def get_xdata_daily(record_num):
 
 def get_mdata_daily(record_num):
     return get_treasury_data(record_num)
+
+def get_daily_data(record_num):
+    # Create a Pandas Excel writer using XlsxWriter as the engine.
+    htdata_dict = get_htdata_daily(record_num)
+    func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
+                 'daily_uk':htdata_dict.get('daily_us'),'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
+    save_xls(dict_df=func_dict, path='temp.xlsx')
+
