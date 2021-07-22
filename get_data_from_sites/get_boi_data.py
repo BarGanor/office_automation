@@ -28,4 +28,3 @@ def get_boi_data(record_num):
     return pd.DataFrame(exchange_lst)
 
 
-print(get_boi_data(8))
