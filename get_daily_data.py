@@ -58,7 +58,7 @@ def get_htdata_daily(record_num):
                 else:
                     daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
-    return {'daily_il':daily_il_df,'daily_us': daily_us_df.sort_index(ascending=False),'daily_uk': daily_uk_df.sort_index(ascending=False)}
+    return {'daily_il':daily_il_df.iloc[::-1],'daily_us': daily_us_df.sort_index(ascending=True),'daily_uk': daily_uk_df.sort_index(ascending=True)}
 
 
 def get_xdata_daily(record_num):
@@ -66,13 +66,14 @@ def get_xdata_daily(record_num):
 
 
 def get_mdata_daily(record_num):
-    return get_treasury_data(record_num)
+    return get_treasury_data(record_num).iloc[::-1]
 
 def get_daily_data(record_num):
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     htdata_dict = get_htdata_daily(record_num)
     func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
-                 'daily_uk':htdata_dict.get('daily_us'),'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
+                 'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
 
-print(get_daily_data(7))
+# for value in get_daily_data(10).values():
+#     print(value.iloc[::-1])

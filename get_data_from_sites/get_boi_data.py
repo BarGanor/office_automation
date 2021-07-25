@@ -25,6 +25,7 @@ def get_boi_data(record_num):
                         exchange_dict[currency_dict.get(currency)] = attr.text
         exchange_lst.append(exchange_dict)
 
-    return pd.DataFrame(exchange_lst)
-
+    exchange_df = pd.DataFrame(exchange_lst).set_index('Date')
+    exchange_df = exchange_df.dropna(how='all')
+    return exchange_df
 
