@@ -13,4 +13,3 @@ def get_treasury_data(record_num):
     treasury_data = treasury_data.iloc[0:record_num]
 
     return treasury_data
-print(get_treasury_data(7))
