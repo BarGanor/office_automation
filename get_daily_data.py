@@ -23,10 +23,9 @@ def get_cdata_daily(record_num):
         index_df = pd.DataFrame({index: index_data['BaseRate']})
 
         cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
-        cdata_daily_df.index = pd.to_datetime(cdata_daily_df.index, format='%d/%m/%Y')
 
+    cdata_daily_df.index = pd.to_datetime(cdata_daily_df.index, format='%d/%m/%Y')
     return cdata_daily_df.sort_index()
-
 
 def get_htdata_daily(record_num):
     daily_il = ['Tel 35', 'Tel 125']
@@ -75,4 +74,5 @@ def get_daily_data(record_num):
     func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
                  'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
-print(get_daily_data(10))
+
+
