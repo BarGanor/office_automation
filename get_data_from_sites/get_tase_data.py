@@ -32,3 +32,4 @@ def get_tase_data(index_name):
     gov_bond_index_dict = req.json().get('Items')
     gov_bond_index_data = pd.DataFrame.from_records(gov_bond_index_dict)
     return gov_bond_index_data
+
