@@ -29,8 +29,13 @@ def get_investing_data(index_name):
     req = requests.get(url, headers=headers)
 
     soup = BeautifulSoup(req.content, "html.parser")
-    table_data = soup.find(id="curr_table")
-    tel_bond_html = table_data.prettify()
+    index_data = soup.find(id="curr_table")
+    index_html = index_data.prettify()
 
-    tel_bond_data = pd.read_html(tel_bond_html)[0]
-    return tel_bond_data
+    index_data = pd.read_html(index_html)[0]
+
+    index_data = index_data.set_index('Date')
+    index_data.index = pd.to_datetime(index_data.index).strftime('%d/%m/%Y')
+
+    return index_data.sort_index()
+

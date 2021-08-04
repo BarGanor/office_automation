@@ -19,13 +19,12 @@ def get_cdata_daily(record_num):
 
     cdata_daily_df = pd.DataFrame()
     for index in index_names:
-        index_data = get_tase_data(index).iloc[0:record_num - 1].set_index('TradeDate')
+        index_data = get_tase_data(index).iloc[-record_num:]
         index_df = pd.DataFrame({index: index_data['BaseRate']})
 
         cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
 
-    cdata_daily_df.index = pd.to_datetime(cdata_daily_df.index, format='%d/%m/%Y')
-    return cdata_daily_df.sort_index()
+    return cdata_daily_df
 
 def get_htdata_daily(record_num):
     daily_il = ['Tel 35', 'Tel 125']
@@ -41,16 +40,13 @@ def get_htdata_daily(record_num):
         for index in daily:
 
             if daily is daily_il:
-                index_data = get_tase_data(index).iloc[0:record_num]
-                index_data = index_data.set_index('TradeDate')
+                index_data = get_tase_data(index).iloc[-record_num:]
                 index_df = pd.DataFrame({index: index_data['BaseRate']})
 
                 daily_il_df = pd.concat([daily_il_df, index_df], axis=1)
 
             else:
-                index_data = get_investing_data(index).iloc[0:record_num]
-                index_data['Date'] = pd.to_datetime(index_data['Date'])
-                index_data = index_data.set_index('Date')
+                index_data = get_investing_data(index).iloc[-record_num:]
                 index_df = pd.DataFrame({index: index_data['Price']})
 
                 if daily is daily_us:
@@ -58,7 +54,7 @@ def get_htdata_daily(record_num):
                 else:
                     daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
-    return {'daily_il':daily_il_df.iloc[::-1],'daily_us': daily_us_df.sort_index(ascending=True),'daily_uk': daily_uk_df.sort_index(ascending=True)}
+    return {'daily_il':daily_il_df,'daily_us': daily_us_df,'daily_uk': daily_uk_df}
 
 
 def get_xdata_daily(record_num):
@@ -74,5 +70,4 @@ def get_daily_data(record_num):
     func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
                  'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
-
 

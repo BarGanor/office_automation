@@ -31,5 +31,9 @@ def get_tase_data(index_name):
 
     gov_bond_index_dict = req.json().get('Items')
     gov_bond_index_data = pd.DataFrame.from_records(gov_bond_index_dict)
-    return gov_bond_index_data
 
+    gov_bond_index_data = gov_bond_index_data.set_index('TradeDate')
+    gov_bond_index_data.index = pd.to_datetime(gov_bond_index_data.index, format='%d/%m/%Y')
+    gov_bond_index_data = gov_bond_index_data.sort_index()
+    gov_bond_index_data.index = gov_bond_index_data.index.strftime('%d/%m/%Y')
+    return gov_bond_index_data
