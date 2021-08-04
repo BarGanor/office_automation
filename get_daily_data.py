@@ -20,7 +20,7 @@ def get_cdata_daily(record_num):
     cdata_daily_df = pd.DataFrame()
     for index in index_names:
         index_data = get_tase_data(index).iloc[-record_num:]
-        index_df = pd.DataFrame({index: index_data['BaseRate']})
+        index_df = pd.DataFrame({index: index_data['CloseRate']})
 
         cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
 
@@ -41,7 +41,7 @@ def get_htdata_daily(record_num):
 
             if daily is daily_il:
                 index_data = get_tase_data(index).iloc[-record_num:]
-                index_df = pd.DataFrame({index: index_data['BaseRate']})
+                index_df = pd.DataFrame({index: index_data['CloseRate']})
 
                 daily_il_df = pd.concat([daily_il_df, index_df], axis=1)
 
@@ -62,7 +62,7 @@ def get_xdata_daily(record_num):
 
 
 def get_mdata_daily(record_num):
-    return get_treasury_data(record_num).iloc[::-1]
+    return get_treasury_data(record_num)
 
 def get_daily_data(record_num):
     # Create a Pandas Excel writer using XlsxWriter as the engine.
@@ -71,3 +71,4 @@ def get_daily_data(record_num):
                  'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
 
+print(get_mdata_daily(10))
