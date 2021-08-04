@@ -20,7 +20,7 @@ def get_cdata_daily(record_num):
     cdata_daily_df = pd.DataFrame()
     for index in index_names:
         index_data = get_tase_data(index).iloc[-record_num:]
-        index_df = pd.DataFrame({index: index_data['CloseRate']})
+        index_df = pd.DataFrame({index: index_data})
 
         cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
 
@@ -71,4 +71,4 @@ def get_daily_data(record_num):
                  'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
 
-print(get_htdata_daily(10))
+print(get_daily_data(10))
