@@ -36,5 +36,5 @@ def get_tase_data(index_name):
     gov_bond_index_data.index = pd.to_datetime(gov_bond_index_data.index, format='%d/%m/%Y')
     gov_bond_index_data = gov_bond_index_data.sort_index()
     gov_bond_index_data.index = gov_bond_index_data.index.strftime('%d/%m/%Y')
-    return gov_bond_index_data
+    return gov_bond_index_data['CloseRate']
 
