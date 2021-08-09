@@ -72,4 +72,3 @@ def get_daily_data(record_num):
                  'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
     return func_dict
 
-#bl
