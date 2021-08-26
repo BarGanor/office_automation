@@ -1,18 +1,20 @@
-import pandas as pd
 from get_data_from_sites.get_tase_data import *
 from get_data_from_sites.get_investing_data import *
 from get_data_from_sites.get_boi_data import *
 from get_data_from_sites.get_trasury_data import *
+from get_data_from_sites.get_barchart_data import *
+from get_data_from_sites.get_eia_data import *
 
 from pandas import ExcelWriter
+
 
 def save_xls(dict_df, path):
     writer = ExcelWriter(path)
     for key in dict_df:
-
         dict_df[key].to_excel(writer, key)
 
     writer.save()
+
 
 def get_cdata_daily(record_num):
     index_names = ['tel bond 20', 'tel bond 40', 'gov bond', 'tel aviv banks', 'tel bond 60']
@@ -25,6 +27,7 @@ def get_cdata_daily(record_num):
         cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
 
     return cdata_daily_df
+
 
 def get_htdata_daily(record_num):
     daily_il = ['Tel 35', 'Tel 125']
@@ -43,7 +46,6 @@ def get_htdata_daily(record_num):
                 index_data = get_tase_data(index).iloc[-record_num:]
                 index_df = pd.DataFrame({index: index_data})
 
-
                 daily_il_df = pd.concat([daily_il_df, index_df], axis=1)
 
             else:
@@ -55,20 +57,35 @@ def get_htdata_daily(record_num):
                 else:
                     daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
-    return {'daily_il':daily_il_df,'daily_us': daily_us_df,'daily_uk': daily_uk_df}
+    return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
 
 
 def get_xdata_daily(record_num):
     return get_boi_data(record_num, file_name='xdata')
 
 
+def get_pdata_daily(record_num):
+    index_names = ['foodstuffs', 'industrials', 'textiles', 'metals']
+    urls = ['https://www.eia.gov/dnav/pet/hist/rbrteD.htm', 'https://www.eia.gov/dnav/pet/hist/rwtcD.htm']
+    table_names = ['Europe Brent Spot Price FOB  (Dollars per Barrel)', 'Cushing, OK WTI Spot Price FOB  (Dollars per Barrel)']
+
+    result_df = pd.DataFrame()
+    eia_data = get_eia_data(urls=urls, table_names=table_names, record_num=7)
+    result_df = pd.concat([result_df, eia_data], axis=1)
+
+    return result_df
+
+
 def get_mdata_daily(record_num):
     return get_treasury_data(record_num)
+
 
 def get_daily_data(record_num):
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     htdata_dict = get_htdata_daily(record_num)
-    func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us':htdata_dict.get('daily_us'),
-                 'daily_uk':htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num)}
+    func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us': htdata_dict.get('daily_us'),
+                 'daily_uk': htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num),
+                 'pdata': get_pdata_daily(10)}
     return func_dict
 
+# save_xls(get_daily_data(10), 'daily_data.xlsx')
