@@ -2,7 +2,6 @@ from get_data_from_sites.get_tase_data import *
 from get_data_from_sites.get_investing_data import *
 from get_data_from_sites.get_boi_data import *
 from get_data_from_sites.get_trasury_data import *
-from get_data_from_sites.get_barchart_data import *
 from get_data_from_sites.get_eia_data import *
 
 from pandas import ExcelWriter
@@ -88,4 +87,3 @@ def get_daily_data(record_num):
                  'pdata': get_pdata_daily(10)}
     return func_dict
 
-# save_xls(get_daily_data(10), 'daily_data.xlsx')
