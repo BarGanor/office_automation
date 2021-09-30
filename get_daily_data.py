@@ -10,7 +10,10 @@ from pandas import ExcelWriter
 def save_xls(dict_df, path):
     writer = ExcelWriter(path)
     for key in dict_df:
-        dict_df[key].to_excel(writer, key)
+        try:
+            dict_df[key].to_excel(writer, key)
+        except:
+            print('had a problem sending sheet to excel. sheet name: ' + key)
 
     writer.save()
 
@@ -52,7 +55,6 @@ def get_htdata_daily(record_num):
                     index_df = pd.DataFrame({index: index_data})
 
                     daily_il_df = pd.concat([daily_il_df, index_df], axis=1)
-
                 else:
                     index_data = get_investing_data(index).iloc[-record_num:]
                     index_df = pd.DataFrame({index: index_data['Price']})
@@ -63,7 +65,8 @@ def get_htdata_daily(record_num):
                         daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
         return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
-    except:
+    except Exception as e:
+        print(e)
         print('Problem getting htdata')
         return  None
 
