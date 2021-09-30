@@ -66,7 +66,6 @@ def get_htdata_daily(record_num):
 
         return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
     except Exception as e:
-        print(e)
         print('Problem getting htdata')
         return  None
 
@@ -89,12 +88,13 @@ def get_pdata_daily(record_num):
         result_df = pd.DataFrame()
         eia_data = get_eia_data(urls=urls, table_names=table_names, record_num=7)
         result_df = pd.concat([result_df, eia_data], axis=1)
+        print(result_df)
 
         return result_df
-    except:
-        print('Problem getting htdata')
+    except Exception as e:
+        print(e)
+        print('Problem getting pdata')
         return None
-
 
 def get_mdata_daily(record_num):
     try:
