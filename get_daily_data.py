@@ -88,7 +88,6 @@ def get_pdata_daily(record_num):
         result_df = pd.DataFrame()
         eia_data = get_eia_data(urls=urls, table_names=table_names, record_num=7)
         result_df = pd.concat([result_df, eia_data], axis=1)
-        print(result_df)
 
         return result_df
     except Exception as e:

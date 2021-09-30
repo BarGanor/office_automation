@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 def get_eia_table(url, table_name):
     eia_response = requests.get(url).content
-    soup = BeautifulSoup(eia_response, parser='html.parser', features='lxml')
+    soup = BeautifulSoup(eia_response, features='lxml')
     eia_data = soup.find("table", {"summary": table_name}).prettify()
     return pd.read_html(eia_data)[0]
 
