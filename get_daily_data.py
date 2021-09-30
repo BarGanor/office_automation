@@ -109,5 +109,3 @@ def get_daily_data(record_num):
                  'pdata': get_pdata_daily(10)}
     return func_dict
 
-
-print(get_daily_data(10))
