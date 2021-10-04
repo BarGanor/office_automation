@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from datetime import datetime
+from bs4 import BeautifulSoup
 
 
 def cols_d_to_h():
@@ -119,7 +120,7 @@ def cols_ab_to_ah():
     df = df.loc['התקופה':].iloc[2:]
 
     total = df[' סך כל הנכסים ']
-    total.name= 'סה"כ נכסים'
+    total.name = 'סה"כ נכסים'
 
     gov_bond = df.loc[:, 'אג"ח פרטיות3 סחירות':].iloc[:, :2]
     gov_bond.columns = ['אג"ח פרטי סחיר', 'אג"ח פרטי לא סחיר']
@@ -137,3 +138,18 @@ def cols_ab_to_ah():
 
     return df
 
+
+def col_ak():
+    result_df = pd.DataFrame()
+    for i in range(2,-1,-1):
+        year = str(datetime.today().year - i)
+        url = 'https://www.boi.org.il/he/BankingSupervision/Data/_layouts/boi/handlers/WebPartHandler.aspx?wp=ItemsAggregator&PageId=150&CqfDateFrom=01%2F01%2F' + year + '&CqfDateTo=31%2F12%2F' + year + '&_=1633337318236'
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+        tab = soup.find("table", {"class": "s4-wpTopTable"})
+        year_df = pd.read_html(tab.prettify())[1]
+
+        result_df = result_df.append(year_df, ignore_index=True)
+
+    result_df = result_df.set_index('תאריך')
+    return result_df
