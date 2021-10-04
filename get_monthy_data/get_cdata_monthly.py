@@ -93,6 +93,15 @@ def cols_w_to_x():
     return result_df
 
 
+def cols_y():
+    url = 'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/tnc02_h.xls'
+    resp = requests.get(url)
+    df = pd.read_excel(resp.content, sheet_name='נתונים שוטפים', index_col=1)
+    df.columns = df.loc['התקופה']
+    df = df.loc['התקופה':].iloc[1:, :]
+    df = df.dropna(axis=0, how='all')
+    df = df.dropna(axis=1, how='all')
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
 
-
+    return df['סה"כ']
 
