@@ -80,6 +80,7 @@ def cols_t_to_v():
 
     return df
 
+
 def cols_w_to_x():
     url = 'https://www.boi.org.il/he/BankingSupervision/Data/Documents/pribmash.xls'
     resp = requests.get(url)
@@ -104,4 +105,35 @@ def cols_y():
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
 
     return df['סה"כ']
+
+
+def cols_ab_to_ah():
+    url = 'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/shce14_h.xls'
+    resp = requests.get(url)
+    df = pd.read_excel(resp.content, index_col=0)
+
+    df = df.dropna(axis=0, how='all')
+    df.columns = df.iloc[0].fillna('').str.cat(' ' + df.iloc[1].fillna(''))
+    df = df.dropna(axis=1, how='all')
+    df = df.dropna(axis=0, how='all')
+    df = df.loc['התקופה':].iloc[2:]
+
+    total = df[' סך כל הנכסים ']
+    total.name= 'סה"כ נכסים'
+
+    gov_bond = df.loc[:, 'אג"ח פרטיות3 סחירות':].iloc[:, :2]
+    gov_bond.columns = ['אג"ח פרטי סחיר', 'אג"ח פרטי לא סחיר']
+
+    stock = df.loc[:, 'מניות סחירות':].iloc[:, :2]
+    stock.columns = ['מניות סחיר', 'מניות לא-סחיר']
+
+    out_of_bond = ((gov_bond.iloc[:, 0] + gov_bond.iloc[:, 1]) / 100) * total
+    out_of_bond.name = 'מזה: אגח פרטי'
+    out_of_stock = ((stock.iloc[:, 0] + stock.iloc[:, 1]) / 100) * total
+    out_of_stock.name = 'מזה: מניות'
+
+    df = pd.concat([total, gov_bond, stock, out_of_bond, out_of_stock], axis=1)
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+
+    return df
 
