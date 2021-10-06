@@ -27,7 +27,7 @@ def get_cdata_monthly(record_num):
             cols_df = function_dict.get(cols)
             df = pd.concat([df, cols_df], axis=1)
         except Exception as e:
-            print('There was a problem getting columns:' + cols + ' for cdata.')
+            print('There was a problem concatenating columns:' + cols + ' for cdata.')
             print('The error: ' + str(e))
 
 
