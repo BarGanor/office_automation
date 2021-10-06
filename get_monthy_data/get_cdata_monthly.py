@@ -46,9 +46,9 @@ def cols_i_to_k():
                 break
             except Exception as e:
                 print('No Data For Month - ' + str(month))
-
+        df.index = df.index.fillna('').astype('string')
         if df is not None:
-            df = df.loc[current_year - 1:]
+            df = df.loc[str(current_year - 1):]
             df = df[['Total ']]
             df.columns = ['מטבע ישראלי', 'מטבע חוץ']
             col_i = df['מטבע ישראלי']
@@ -61,17 +61,18 @@ def cols_i_to_k():
             temp = []
             current_month = 1
             for i in result_df.index:
-                if (pd.notna(i)) & (type(i) is int):
+                if (i.isnumeric()):
                     curr_year = int(i)
                     current_month = 1
-                if type(i) is not str:
+                    temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
+                    current_month += 1
+                else:
                     temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
                     current_month += 1
             result_df.index = temp
-
         return result_df.astype('int64')
 
-
+print(cols_i_to_k())
 def col_l():
     try:
         url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/d010.xls'
