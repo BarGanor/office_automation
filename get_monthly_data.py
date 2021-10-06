@@ -35,7 +35,7 @@ def get_cdata_monthly(record_num):
     df = df.sort_index()
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
 
-    return df[-record_num:]
+    return df.iloc[-record_num:]
 
 def get_monthly_data(record_num):
     func_dict = {'cdata':get_cdata_monthly(record_num)}
