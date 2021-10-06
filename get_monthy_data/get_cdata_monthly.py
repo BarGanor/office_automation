@@ -28,6 +28,7 @@ def cols_d_to_h():
         print('problem getting cols: D-H')
 
 def cols_i_to_k():
+    try:
         current_month = datetime.today().month
         current_year = datetime.today().year
 
@@ -71,8 +72,9 @@ def cols_i_to_k():
                     current_month += 1
             result_df.index = temp
         return result_df.astype('int64')
+    except:
+        print('problem getting cols: I-K')
 
-print(cols_i_to_k())
 def col_l():
     try:
         url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/d010.xls'
