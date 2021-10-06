@@ -69,6 +69,7 @@ def get_htdata_daily(record_num):
         print('Problem getting htdata')
         return  None
 
+print(get_htdata_daily(10).get('daily_uk'))
 
 def get_xdata_daily(record_num):
     try:

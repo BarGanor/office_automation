@@ -1,16 +1,28 @@
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from bs4 import BeautifulSoup
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
 
 
 def cols_d_to_h():
-    url = "https://info.tase.co.il/Heb/Statistics/StatRes/2021/Stat_202_l02_2021.xlsx"
-    resp = requests.get(url)
-    df = pd.read_excel(resp.content, index_col=0, header=3)
-    df = df.loc[: 'הערות לטבלה:'].iloc[:-2]
-    return df[['מניות והמירים(1) סה"כ', 'אג"ח ממשלתי סה"כ הנפקות(2)', 'אג"ח ממשלתי פדיונות(3)', 'אג"ח ממשלתי גיוס נטו', 'אג"ח חברות סה"כ']]
-
+    result_df = pd.DataFrame()
+    for i in range(2, -1, -1):
+        year = str(datetime.today().year - i)
+        url = "https://info.tase.co.il/Heb/Statistics/StatRes/" + year + "/Stat_202_l02_" + year + ".xlsx"
+        resp = requests.get(url)
+        df = pd.read_excel(resp.content, index_col=0, header=3)
+        df = df.loc[: 'הערות לטבלה:'].iloc[:-2]
+        index_lst = [x for x in df.index if not type(x) is int]
+        index_lst = [x for x in index_lst if len(str(x)) >7]
+        index_lst = [x for x in index_lst if not x.isnumeric()]
+        year_df = df.iloc[-len(index_lst):]
+        year_df.index = [str(x) + '/' + year for x in range(1, len(index_lst) +1)]
+        year_df = year_df[['מניות והמירים(1) סה"כ', 'אג"ח ממשלתי סה"כ הנפקות(2)', 'אג"ח ממשלתי פדיונות(3)', 'אג"ח ממשלתי גיוס נטו', 'אג"ח חברות סה"כ']]
+        year_df.index = ['0' + x if x.find('/') == 1 else x for x in year_df.index]
+        result_df = result_df.append(year_df)
+    return result_df
 
 def cols_i_to_k():
     current_month = datetime.today().month
@@ -30,7 +42,6 @@ def cols_i_to_k():
             df.columns = df.iloc[7].fillna('').str.cat(' ' + df.iloc[8].fillna(''))
             break
         except Exception as e:
-            print(e)
             print('No Data For Month - ' + str(month))
 
     if df is not None:
@@ -57,6 +68,18 @@ def cols_i_to_k():
 
     return result_df.astype('int64')
 
+def col_l():
+    url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/d010.xls'
+    resp = requests.get(url)
+    df = pd.read_excel(resp.content, index_col=-1)
+    df = df.loc['נתוני סוף תקופה (במיליוני ש"ח)':].iloc[:, -1].dropna()
+
+    df.index = pd.to_datetime(df.index)
+    df = df.sort_index()
+    df.index = df.index.strftime('%m/%Y')
+    df.name = 'סך הכל אשראי לציבור'
+
+    return df
 
 def cols_t_to_v():
     url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/n110.xls'
@@ -78,9 +101,8 @@ def cols_t_to_v():
     df = df.loc['Date':].iloc[1:31, :]
     df = df.sort_index()
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
-
+    df = df[df.columns[::-1]]
     return df
-
 
 def cols_w_to_x():
     url = 'https://www.boi.org.il/he/BankingSupervision/Data/Documents/pribmash.xls'
@@ -95,17 +117,41 @@ def cols_w_to_x():
     return result_df
 
 
-def cols_y():
-    url = 'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/tnc02_h.xls'
+def col_y():
+    url = 'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/tnc01_h.xls'
     resp = requests.get(url)
     df = pd.read_excel(resp.content, sheet_name='נתונים שוטפים', index_col=1)
     df.columns = df.loc['התקופה']
-    df = df.loc['התקופה':].iloc[1:, :]
+    df = df.loc['התקופה':].iloc[7:, :]
     df = df.dropna(axis=0, how='all')
     df = df.dropna(axis=1, how='all')
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    result_df = df['סה"כ']
+    result_df.name = 'שווי תיק הנכסים של הציבור, מיליארד ₪ מחירים שוטפים'
+    return result_df
 
-    return df['סה"כ']
+
+
+def cols_z_to_aa():
+    import dateutil.relativedelta
+    index_lst = []
+    today = date.today().replace(day=1)
+
+    df_dict = {'תל בונד 20 (מחושב)':[], 'תל בונד 40 (מחושב)':[]}
+
+    for i in range(24):
+        month = today - dateutil.relativedelta.relativedelta(months=i)
+        index_lst.append(month.strftime('%m/%Y'))
+
+        df_dict.get('תל בונד 20 (מחושב)').append('')
+        df_dict.get('תל בונד 40 (מחושב)').append('')
+
+    df = pd.DataFrame.from_dict(df_dict)
+    df.index = pd.to_datetime(index_lst)
+    df = df.sort_index()
+    df.index = df.index.strftime('%m/%Y')
+
+    return df
 
 
 def cols_ab_to_ah():
@@ -148,8 +194,27 @@ def col_ak():
         soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
         tab = soup.find("table", {"class": "s4-wpTopTable"})
         year_df = pd.read_html(tab.prettify())[1]
-
+        year_df = year_df.drop_duplicates()
         result_df = result_df.append(year_df, ignore_index=True)
 
     result_df = result_df.set_index('תאריך')
     return result_df
+
+
+def cols_be_to_bg():
+    url = 'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/itrashrh.xlsx'
+    resp = requests.get(url)
+    df = pd.read_excel(resp.content, sheet_name='ארוך טווח אשראי חודשי - אומדנים', header=7, index_col=0)
+
+    df = df.iloc[:, -36:].transpose()
+    df.index = [x.replace('-', '/20') for x in df.index]
+    df.index = ['0' + x if x.find('/') == 1 else x for x in df.index]
+
+    total_credit_to_business = df.loc[:, 'סך האשראי במשק':].iloc[:, 1]
+    total_credit_to_household = df.loc[:, 'סך האשראי במשק':].iloc[:, 6]
+    total_credit_for_residency = df.loc[:, 'סך האשראי מהבנקים':].iloc[:, 2]
+
+    result_df = pd.concat([total_credit_to_business, total_credit_to_household, total_credit_for_residency], axis=1)
+
+    return result_df
+
