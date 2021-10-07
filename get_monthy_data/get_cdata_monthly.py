@@ -51,7 +51,7 @@ def cols_i_to_k():
         if df is not None:
             df = df.loc[str(current_year - 1):]
             df = df[['Total ']]
-            df.columns = ['מטבע ישראלי', 'מטבע חוץ']
+            df.columns = ['מטבע חוץ', 'מטבע ישראלי']
             col_i = df['מטבע ישראלי']
             col_j = df['מטבע חוץ']
             col_k = col_i + col_j
@@ -128,9 +128,10 @@ def cols_w_to_x():
         result_df = df[['ממוצע', 'מעל 25 ']]
         result_df = result_df.sort_index()
         result_df.index = pd.to_datetime(result_df.index).strftime('%m/%Y')
-        return result_df
+        return result_df.astype('string') + '%'
     except:
         print('problem getting cols: W-X')
+
 
 
 def col_y():

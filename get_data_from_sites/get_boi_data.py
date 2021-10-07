@@ -33,3 +33,4 @@ def get_boi_data(record_num, file_name):
         exchange_df.index = pd.to_datetime(exchange_df.index, format='%Y-%m-%d').strftime('%d/%m/%Y')
 
         return exchange_df.sort_index()
+
