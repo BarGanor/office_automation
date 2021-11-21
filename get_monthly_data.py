@@ -3,6 +3,7 @@ import pandas as pd
 from pandas import ExcelWriter
 
 from get_monthy_data.get_cdata_monthly import *
+from get_monthy_data.get_ft_data_monthly import *
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -36,7 +37,9 @@ def get_cdata_monthly(record_num):
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
     return df.iloc[-record_num:]
 
+
+
 def get_monthly_data(record_num):
-    func_dict = {'cdata':get_cdata_monthly(record_num)}
+    func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num)}
 
     return func_dict
