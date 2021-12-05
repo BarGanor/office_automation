@@ -101,15 +101,17 @@ def cols_t_to_v():
         ### Get column index ###
         temp = df.loc['תאריך':]
         temp = temp.loc[pd.isna(temp.index)]
+
         col_index = []
         for i in range(3):
             col = temp.iloc[:, i]
             col_index.append(col.fillna(' ').str.cat(sep=' '))
-        #########################
+        # #########################
 
         df.columns = col_index
         df = df[df.index.notnull()]
         df = df.loc['Date':].iloc[1:31, :]
+        df = df.dropna(how='all')
         df = df.sort_index()
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         df = df[df.columns[::-1]]

@@ -43,3 +43,4 @@ def get_monthly_data(record_num):
     func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num)}
 
     return func_dict
+
