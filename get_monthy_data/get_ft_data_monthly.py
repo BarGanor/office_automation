@@ -51,3 +51,4 @@ def get_ft_data_monthly(record_num):
     df.columns = id_dict.keys()
     return df.iloc[:record_num]
 
+#test
