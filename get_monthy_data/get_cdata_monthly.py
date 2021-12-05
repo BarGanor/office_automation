@@ -46,7 +46,8 @@ def cols_i_to_k():
                 df.columns = df.iloc[7].fillna('').str.cat(' ' + df.iloc[8].fillna(''))
                 break
             except Exception as e:
-                print('No Data For Month - ' + str(month))
+                print('cols i-k: No Data For Month - ' + str(month))
+
         df.index = df.index.fillna('').astype('string')
         if df is not None:
             df = df.loc[str(current_year - 1):]
@@ -146,7 +147,7 @@ def col_y():
         df = df.dropna(axis=0, how='all')
         df = df.dropna(axis=1, how='all')
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
-        result_df = df['סה"כ']
+        result_df = df['סה"כ7']
         result_df.name = 'שווי תיק הנכסים של הציבור, מיליארד ₪ מחירים שוטפים'
         return result_df
     except:

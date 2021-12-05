@@ -38,4 +38,3 @@ def get_tase_data(index_name):
     gov_bond_index_data.index = gov_bond_index_data.index.strftime('%d/%m/%Y')
     return gov_bond_index_data['CloseRate']
 
-#bl

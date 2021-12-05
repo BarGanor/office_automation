@@ -18,6 +18,7 @@ def get_col_data(url):
     return col
 
 def get_ft_data_monthly(record_num):
+    print('Getting FT_Data')
     problem_getting = []
     df = pd.DataFrame()
 

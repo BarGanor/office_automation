@@ -19,6 +19,7 @@ def save_xls(dict_df, path):
     writer.save()
 
 def get_cdata_monthly(record_num):
+    print('Getting C_Data')
     function_dict = {'D-H': cols_d_to_h(), 'I-K': cols_i_to_k(), 'L': col_l(), 'T-V': cols_t_to_v(), 'W-X': cols_w_to_x(), 'Y': col_y(), 'Z-AA': cols_z_to_aa(), 'AB-AH': cols_ab_to_ah(), 'AK': col_ak(), 'BE-BG': cols_be_to_bg()}
 
     df = pd.DataFrame()
