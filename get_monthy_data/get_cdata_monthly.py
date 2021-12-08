@@ -64,7 +64,7 @@ def cols_i_to_k():
             current_month = 1
             for i in result_df.index:
                 if (i.isnumeric()):
-                    curr_year = str(i)
+                    curr_year = int(i)
                     current_month = 1
                     temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
                     current_month += 1
