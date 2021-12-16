@@ -24,7 +24,7 @@ def cols_d_to_h():
             year_df.index = ['0' + x if x.find('/') == 1 else x for x in year_df.index]
             result_df = result_df.append(year_df)
         return result_df
-    except:
+    except Exception as e:
         print('problem getting cols: D-H')
 
 def cols_i_to_k():
@@ -73,8 +73,8 @@ def cols_i_to_k():
                     current_month += 1
             result_df.index = temp
         return result_df.astype('int64')
-    except:
-        print('problem getting cols: I-K')
+    except Exception as e:
+        print('problem getting cols: I-K: ' + str(e))
 
 def col_l():
     try:
@@ -89,8 +89,8 @@ def col_l():
         df.name = 'סך הכל אשראי לציבור'
 
         return df
-    except:
-        print('problem getting cols: L')
+    except Exception as e:
+        print('problem getting cols: L: ' +str(e))
 
 def cols_t_to_v():
     try:
@@ -117,8 +117,8 @@ def cols_t_to_v():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         df = df[df.columns[::-1]]
         return df
-    except:
-        print('problem getting cols: T-V')
+    except Exception as e:
+        print('problem getting cols: T-V: ' + str(e))
 
 def cols_w_to_x():
     try:
@@ -132,8 +132,8 @@ def cols_w_to_x():
         result_df = result_df.sort_index()
         result_df.index = pd.to_datetime(result_df.index).strftime('%m/%Y')
         return result_df.astype('string') + '%'
-    except:
-        print('problem getting cols: W-X')
+    except Exception as e:
+        print('problem getting cols: W-X: '+ str(e))
 
 
 
@@ -150,8 +150,8 @@ def col_y():
         result_df = df['סה"כ7']
         result_df.name = 'שווי תיק הנכסים של הציבור, מיליארד ₪ מחירים שוטפים'
         return result_df
-    except:
-        print('problem getting cols: Y')
+    except Exception as e:
+        print('problem getting cols: Y: ' + str(e))
 
 
 
@@ -176,8 +176,8 @@ def cols_z_to_aa():
         df.index = df.index.strftime('%m/%Y')
 
         return df
-    except:
-        print('problem getting cols: Z-AA')
+    except Exception as e:
+        print('problem getting cols: Z-AA: ' + str(e))
 
 
 def cols_ab_to_ah():
@@ -210,8 +210,8 @@ def cols_ab_to_ah():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
 
         return df
-    except:
-        print('problem getting cols: AB-AH')
+    except Exception as e:
+        print('problem getting cols: AB-AH: ' + str(e))
 
 
 def col_ak():
@@ -230,8 +230,8 @@ def col_ak():
         result_df = result_df.set_index('תאריך')
         return result_df
 
-    except:
-        print('problem getting cols: AK')
+    except Exception as e:
+        print('problem getting cols: AK: ' + str(e))
 
 
 def cols_be_to_bg():
@@ -251,6 +251,6 @@ def cols_be_to_bg():
         result_df = pd.concat([total_credit_to_business, total_credit_to_household, total_credit_for_residency], axis=1)
 
         return result_df
-    except:
-        print('problem getting cols: BE-BG')
+    except Exception as e:
+        print('problem getting cols: BE-BG: ' + str(e))
 

@@ -31,8 +31,8 @@ def get_cdata_daily(record_num):
             cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
 
         return cdata_daily_df
-    except:
-        print('problem getting cdata')
+    except Exception as e:
+        print('problem getting cdata:' + str(e))
         return None
 
 def get_htdata_daily(record_num):
@@ -66,7 +66,7 @@ def get_htdata_daily(record_num):
 
         return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
     except Exception as e:
-        print('Problem getting htdata')
+        print('Problem getting htdata: ' + str(e))
         return  None
 
 
@@ -74,8 +74,8 @@ def get_xdata_daily(record_num):
     try:
         print('getting xdata')
         return get_boi_data(record_num, file_name='xdata')
-    except:
-        print('Problem getting xdata')
+    except Exception as e:
+        print('Problem getting xdata: ' + str(e))
         return None
 
 def get_pdata_daily(record_num):
@@ -91,16 +91,15 @@ def get_pdata_daily(record_num):
 
         return result_df
     except Exception as e:
-        print(e)
-        print('Problem getting pdata')
+        print('Problem getting pdata:' + str(e))
         return None
 
 def get_mdata_daily(record_num):
     try:
         print('getting mdata')
         return get_treasury_data(record_num)
-    except:
-        print('problem getting mdata')
+    except Exception as e:
+        print('problem getting mdata: ' + str(e))
         return None
 
 def get_daily_data(record_num):
