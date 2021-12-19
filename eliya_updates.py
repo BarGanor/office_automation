@@ -1,6 +1,32 @@
 import requests
 import pandas as pd
 from datetime import datetime, date, timedelta
+from bs4 import BeautifulSoup
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
+
+# edata_monthly
+
+
+def col_z():
+    url = 'https://www.cbs.gov.il/he/mediarelease/doclib/2021/410/28_21_410t2.xls'
+    df = pd.read_excel(url, index_col=-1)
+    df = df.iloc[32:, 6].dropna(axis=0, how='all')
+    df.index = df.index.fillna(0)
+    df.index = df.index.astype(int)
+    new_index = []
+    curr_month = 1
+    for ind in df.index:
+        if ind != 0:
+            curr_year = int(ind)
+            curr_month = 1
+            new_index.append(datetime(curr_year, curr_month, 1).strftime('%m/%Y'))
+            curr_month += 1
+        else:
+            new_index.append(datetime(curr_year, curr_month, 1).strftime('%m/%Y'))
+            curr_month += 1
+    df.index = new_index
+    return df
 
 
 def col_aa():
@@ -38,6 +64,7 @@ def col_ab():
     df.index = new_index
     return df
 
+
 def col_ac():
     url = 'https://www.cbs.gov.il/he/mediarelease/doclib/2021/400/28_21_400t1.xls'
     resp = requests.get(url)
@@ -59,7 +86,11 @@ def col_ac():
     df.index = new_index
     return df
 
-# def col_bj():
-    import tradingeconomics as te
-    te.login('Your_Key:Your_Secret')
-    te.getHistoricalData(country='Israel', indicators='Foreign Exchange Reserves', initDate='2015-01-01')
+
+def col_bj():
+    url = 'https://www.boi.org.il/he/NewsAndPublications/PressReleases/Pages/7-12-21.aspx'
+    resp = requests.get(url)
+    soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+    table = soup.find("table",{"class":'MsoNormalTable'}).prettify()
+    df = pd.read_html(table)[0]
+    return ['סך הכול  יתרות מטבע החוץ']
