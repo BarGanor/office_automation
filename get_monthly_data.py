@@ -39,6 +39,24 @@ def get_cdata_monthly(record_num):
     return df.iloc[-record_num:]
 
 
+def get_edata_monthly(record_num):
+    print('Getting E_Data')
+    function_dict = {'Z': col_z(), 'AA': col_aa(), 'AB': col_ab(), 'AC': col_ac(), 'BJ': col_bj()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for edata.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
 
 def get_monthly_data(record_num):
     func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num)}
