@@ -136,7 +136,6 @@ def col_bp_to_bq():
     try:
         today = datetime(date.today().year, date.today().month, date.today().day).strftime('%d/%m/%Y')
         dtObj = datetime.strptime(today, '%d/%m/%Y')
-        past_date = dtObj - relativedelta(months=i)
         index_col = [(dtObj - relativedelta(months=i)).date() for i in range(1,30,1)]
         df = pd.DataFrame(columns=['רכישות מט\"ח במליוני דולרים', 'שינוי ביתרות מט\"ח במיליוני דולרים'], index=index_col)
         df = df.fillna("").sort_index()
