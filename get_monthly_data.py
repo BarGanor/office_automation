@@ -4,6 +4,7 @@ from pandas import ExcelWriter
 
 from get_monthy_data.get_cdata_monthly import *
 from get_monthy_data.get_ft_data_monthly import *
+from get_monthy_data.get_edata_monthly import *
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -17,6 +18,7 @@ def save_xls(dict_df, path):
             print('had a problem sending sheet to excel. sheet name: ' + key)
 
     writer.save()
+
 
 def get_cdata_monthly(record_num):
     print('Getting C_Data')
@@ -57,6 +59,7 @@ def get_edata_monthly(record_num):
     df = df.sort_index()
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
     return df.iloc[-record_num:]
+
 
 def get_monthly_data(record_num):
     func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num)}

@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 from datetime import datetime, date, timedelta
 from bs4 import BeautifulSoup
+from dateutil.relativedelta import relativedelta
 import time
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -26,6 +27,7 @@ def col_z():
                 new_index.append(datetime(curr_year, curr_month, 1).strftime('%m/%Y'))
                 curr_month += 1
         df.index = new_index
+        df.name = 'אלפי תיירים, מנוכה עונתיות'
         return df
     except Exception as e:
         print('problem getting col: Z')
@@ -42,6 +44,7 @@ def col_aa():
         col.index = pd.to_datetime(col.index)
         col = col.sort_index()
         col.index = col.index.strftime('%m/%Y')
+        col.name = 'מקורי'
         return col
     except Exception as e:
         print('problem getting col: AA')
@@ -67,6 +70,7 @@ def col_ab():
                 new_index.append(datetime(curr_year, curr_month, 1).strftime('%m/%Y'))
                 curr_month += 1
         df.index = new_index
+        df.name = 'תיירים זרים'
         return df
     except Exception as e:
         print('problem getting col: AB')
@@ -92,9 +96,11 @@ def col_ac():
                 new_index.append(datetime(curr_year, curr_month, 1).strftime('%m/%Y'))
                 curr_month += 1
         df.index = new_index
+        df.name = 'ישראלים'
         return df
     except Exception as e:
         print('problem getting col: AC')
+
 
 def col_bj():
     try:
@@ -106,8 +112,21 @@ def col_bj():
         df[df.columns] = df[df.columns].replace({'\$': '', 'B': ''}, regex=True)
         df.index = pd.to_datetime(df.index)
         df = df.sort_index()
-        df.index = df.index.strftime('%m/%Y')
+        df.index = df.index.strftime('%d/%m/%Y')
         df = df[["Actual"]].iloc[:-1, :]
+        df = df.rename(columns={"Actual": "יתרות מט\"ח במיליוני דולרים"})
+        new_index=[]
+        date_format = '%d/%m/%Y'
+        n = 1
+
+        for i in range(0,2,1):
+            dtObj = datetime.strptime(df.index[i], date_format)
+            past_date = dtObj - relativedelta(months=n)
+            past_date_str = past_date.strftime('%m/%Y')
+            new_index.append(past_date_str)
+
+        df.index = new_index
+        df = df.apply(lambda x: x.str.replace('.',','))
         return df
     except Exception as e:
         print('problem getting col: BJ')
