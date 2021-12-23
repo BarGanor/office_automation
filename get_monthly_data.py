@@ -43,7 +43,7 @@ def get_cdata_monthly(record_num):
 
 def get_edata_monthly(record_num):
     print('Getting E_Data')
-    function_dict = {'Z': col_z(), 'AA': col_aa(), 'AB': col_ab(), 'AC': col_ac(), 'BJ': col_bj()}
+    function_dict = {'Z': col_z(), 'AA': col_aa(), 'AB': col_ab(), 'AC': col_ac(), 'BJ': col_bj(), 'bp-bq': col_bp_to_bq()}
 
     df = pd.DataFrame()
 
@@ -62,7 +62,7 @@ def get_edata_monthly(record_num):
 
 
 def get_monthly_data(record_num):
-    func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num)}
+    func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num), 'edata': get_edata_monthly(record_num)}
 
     return func_dict
 
