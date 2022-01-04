@@ -76,13 +76,13 @@ def col_i_to_k():
         resp = requests.get(url)
         soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
         table = soup.find("table", {"class": 'DataTable'}).prettify()
-        df = pd.read_html(table, index_col=1, header=2)[0].dropna( how='all')
-        df = df.iloc[2:,4:].transpose()
-        df = df.iloc[4:,:].loc[:,['Euro area (19 countries)','United Kingdom','Japan']]
-        df.index = pd.to_datetime(df.index)
-        df.index = df.index.strftime('%m/%Y')
+        df3 = pd.read_html(table, index_col=1, header=2)[0].dropna( how='all')
+        df3 = df3.iloc[2:,4:].transpose()
+        df3 = df3.iloc[3:,:].loc[:,['Euro area (19 countries)','United Kingdom','Japan']]
+        df3.index = pd.to_datetime(df3.index)
+        df3.index = df3.index.strftime('%m/%Y')
 
-        return df
+        return df3
     except Exception as e:
         print('problem getting cols: I-J')
 
