@@ -61,7 +61,7 @@ def currancy_column(currancy):
         return df
 
 
-def cols_d_to_h():
+def cols_d_to_h_xdata():
     currancy_names = ['U.S. DOLLAR', 'EURO', 'BRITISH POUND', 'JAPANESE YEN', 'SWISS FRANC']
     df_all_currancy = pd.DataFrame()
     for currancy in currancy_names:
@@ -70,7 +70,7 @@ def cols_d_to_h():
     return df_all_currancy
 
 
-def col_i_to_k():
+def col_i_to_k_xdata():
     try:
         url = 'http://stats.oecd.org/index.aspx?queryid=169'
         resp = requests.get(url)

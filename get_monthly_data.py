@@ -1,5 +1,3 @@
-import requests
-import pandas as pd
 from pandas import ExcelWriter
 
 from get_monthy_data.get_cdata_monthly import *
@@ -10,6 +8,7 @@ from get_monthy_data.get_xdata_monthly import *
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
+
 
 def save_xls(dict_df, path):
     writer = ExcelWriter(path)
@@ -35,7 +34,6 @@ def get_cdata_monthly(record_num):
         except Exception as e:
             print('There was a problem concatenating columns:' + cols + ' for cdata.')
             print('The error: ' + str(e))
-
 
     df.index = pd.to_datetime(df.index, format="%m/%Y")
     df = df.sort_index()
@@ -65,7 +63,7 @@ def get_edata_monthly(record_num):
 
 def get_xdata_monthly(record_num):
     print('Getting X_Data')
-    function_dict = {'D-H':cols_d_to_h(), 'I-K': cols_i_to_k(), 'L-N':col_l_to_n(),'P': col_p()}
+    function_dict = {'D-H': cols_d_to_h_xdata(), 'I-K': col_i_to_k_xdata(), 'L-N': col_l_to_n(), 'P': col_p()}
 
     df = pd.DataFrame()
 
@@ -84,7 +82,6 @@ def get_xdata_monthly(record_num):
 
 
 def get_monthly_data(record_num):
-    func_dict = {'cdata':get_cdata_monthly(record_num), 'ftdata':get_ft_data_monthly(record_num), 'edata': get_edata_monthly(record_num), 'xdata': get_xdata_monthly(record_num)}
+    func_dict = {'cdata': get_cdata_monthly(record_num), 'ftdata': get_ft_data_monthly(record_num), 'edata': get_edata_monthly(record_num), 'xdata': get_xdata_monthly(record_num)}
 
     return func_dict
-
