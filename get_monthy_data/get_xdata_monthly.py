@@ -77,7 +77,7 @@ def col_i_to_k_xdata():
         soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
         table = soup.find("table", {"class": 'DataTable'}).prettify()
         df3 = pd.read_html(table, index_col=1, header=2)[0].dropna( how='all')
-        df3 = df3.iloc[2:, 4:].transpose()
+        df3 = df3.iloc[2:,4:].transpose()
         df3 = df3.iloc[5:, :].loc[:,['Euro area (19 countries)','United Kingdom','Japan']]
         df3.index = pd.to_datetime(df3.index)
         df3.index = df3.index.strftime('%m/%Y')

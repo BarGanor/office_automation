@@ -36,7 +36,6 @@ def col_z():
 def col_aa():
     try:
         url = 'https://apis.cbs.gov.il/series/data/list?id=37615&format=json&download=false'
-        resp = requests.get(url)
         resp = requests.get(url).json()
         data = resp['DataSet']['Series'][0]['obs']
         col = pd.DataFrame.from_records(data)
