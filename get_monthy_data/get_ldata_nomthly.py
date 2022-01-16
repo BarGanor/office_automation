@@ -78,3 +78,158 @@ def cols_x_to_ba_ldata():
         return df
     except Exception as e:
         print('problem getting col: X-BA')
+
+
+def col_bf_ldata():
+    try:
+        url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=off&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=LRHUTTTTEZM156S&scale=left&cosd=2020-10-01&coed=2021-10-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date=2022-01-16&revision_date=2022-01-16&nd=1990-07-01.csv'
+        df = pd.read_csv(url, index_col=0)
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
+        df.columns = ['שיעור אבטלה בגוש האירו']
+
+        return df
+    except Exception as e:
+        print('problem getting cols: BF')
+
+
+def col_bg_ldata():
+    try:
+        url = 'https://data.bls.gov/timeseries/LNS14000000'
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+        table = soup.find("table", {"class": 'regular-data'}).prettify()
+        df = pd.read_html(table, index_col=0)[0].dropna( how='all')
+        df2_index = df.index
+        df2 = df.iloc[-2:-1,:].transpose()
+        df = df.iloc[-1:,:].transpose()
+        df2.index = [f"{i} {df2_index[-2]}" for i in df2.index]
+        df.index = [f"{i} {df2_index[-1]}" for i in df.index]
+        df2.columns = df.columns
+        df = pd.concat([df2, df], axis=0)
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
+        df.columns = ["שיעור אבטלה בארה'ב"]
+
+        return df
+    except Exception as e:
+        print('problem getting cols: BG')
+
+
+def col_bh_to_by_ldata():
+    try:
+        today = datetime(date.today().year, date.today().month, date.today().day).strftime('%d/%m/%Y')
+        dtObj = datetime.strptime(today, '%d/%m/%Y')
+        index_col = [(dtObj - relativedelta(months=i)).date() for i in range(1,30,1)]
+        df = pd.DataFrame(columns=[ "ציבורי","עסקי","סה'כ","ציבורי","עסקי","סה'כ" ,"ציבורי","עסקי","סה'כ","מנוכה עונתיות","מקורי","תביעות חדשות","תביעות מתמשכות","סה'כ","תביעות חדשות","תביעות ממשיכות","סה'כ"], index=index_col)
+        df = df.fillna("").sort_index()
+        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        return df
+    except Exception as e:
+        print('problem getting col: BH-BY')
+
+
+def cols_bz_ldata():
+    try:
+            url = f'https://apis.cbs.gov.il/series/data/list?id=91018&format=json&download=false'
+            resp = requests.get(url).json()
+            data = resp['DataSet']['Series'][0]['obs']
+            col = pd.DataFrame.from_records(data)
+            col = col.set_index('TimePeriod')
+            col.index = pd.to_datetime(col.index)
+            col = col.sort_index()
+            col.index = col.index.strftime('%m/%Y')
+            col.columns = {'value': 'משרות פנויות (אלפים)'}
+            return col
+    except Exception as e:
+        print('problem getting col: BZ')
+
+
+def cols_ca_ldata():
+    try:
+        url = f'https://apis.cbs.gov.il/series/data/list?id=91018&format=json&download=false'
+        resp = requests.get(url).json()
+        data = resp['DataSet']['Series'][0]['obs']
+        col = pd.DataFrame.from_records(data)
+        col = col.set_index('TimePeriod')
+        col.index = pd.to_datetime(col.index)
+        col = col.sort_index()
+        col.index = col.index.strftime('%m/%Y')
+        col.columns = {'value': 'סהכ משרות = מועסקים (מנוכה עונתיות)+ משרות'}
+
+        url1 = f'https://apis.cbs.gov.il/series/data/list?id=41089&format=json&download=false'
+        resp1 = requests.get(url1).json()
+        data1 = resp1['DataSet']['Series'][0]['obs']
+        col1 = pd.DataFrame.from_records(data1)
+        col1 = col1.set_index('TimePeriod')
+        col1.index = pd.to_datetime(col1.index)
+        col1 = col1.sort_index()
+        col1.index = col1.index.strftime('%m/%Y')
+        col1.columns = col.columns
+
+        df = col1.add(col, fill_value=0)
+
+        return df
+    except Exception as e:
+        print('problem getting col: CA')
+
+
+def cols_cb_to_cg_ldata():
+    try:
+        series_id = {'col_cb': '613067', 'col_cc': '613048', 'col_cd': '613010', 'col_ce': '613384',
+                     'col_cf': '613346', 'col_cg': '613232'}
+        df = pd.DataFrame()
+        for id in series_id.keys():
+            url = f'https://apis.cbs.gov.il/series/data/list?id={series_id.get(id)}&format=json&download=false'
+            resp = requests.get(url).json()
+            data = resp['DataSet']['Series'][0]['obs']
+            col = pd.DataFrame.from_records(data)
+            col = col.set_index('TimePeriod')
+            col.index = pd.to_datetime(col.index)
+            col = col.sort_index()
+            col.index = col.index.strftime('%m/%Y')
+            df = pd.concat([df, col], axis=1)
+        df.columns = ['col_cb', 'col_cc', 'col_cd', 'col_ce',
+                     'col_cf', 'col_cg']
+        return df
+    except Exception as e:
+        print('problem getting col: CB-CG')
+
+
+def cols_ch_to_cu_ldata():
+    try:
+        series_id = {'col_ch': '47682', 'col_ci': '47650', 'col_cj': '47673', 'col_ck': '47641',
+                     'col_cl': '47675', 'col_cm': '47643',
+                     'col_cn': '47676', 'col_co': '47644', 'col_cp': '47677', 'col_cq': '47645',
+                     'col_cr': '47686', 'col_cs': '47654', 'col_ct': '47687', 'col_cu': '47655'}
+        df = pd.DataFrame()
+        for id in series_id.keys():
+            url = f'https://apis.cbs.gov.il/series/data/list?id={series_id.get(id)}&format=json&download=false'
+            resp = requests.get(url).json()
+            data = resp['DataSet']['Series'][0]['obs']
+            col = pd.DataFrame.from_records(data)
+            col = col.set_index('TimePeriod')
+            col.index = pd.to_datetime(col.index)
+            col = col.sort_index()
+            col.index = col.index.strftime('%m/%Y')
+            df = pd.concat([df, col], axis=1)
+        df.columns = ['col_ch', 'col_ci', 'col_cj', 'col_ck',
+                     'col_cl', 'col_cm',
+                     'col_cn', 'col_co', 'col_cp', 'col_cq',
+                     'col_cr', 'col_cs', 'col_ct', 'col_cu']
+        return df
+    except Exception as e:
+        print('problem getting col: CH-CU')
+
+
+def col_cv_to_cx_ldata():
+    try:
+        today = datetime(date.today().year, date.today().month, date.today().day).strftime('%d/%m/%Y')
+        dtObj = datetime.strptime(today, '%d/%m/%Y')
+        index_col = [(dtObj - relativedelta(months=i)).date() for i in range(1,30,1)]
+        df = pd.DataFrame(columns=[ "חיפשו עבודה בהמשך","לא עבדו ב-12 החודשים (מקורי)","לא עבדו ב-12 החודשים (מנוכה)"], index=index_col)
+        df = df.fillna("").sort_index()
+        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        return df
+    except Exception as e:
+        print('problem getting col: CV-CX')
