@@ -8,24 +8,44 @@ pd.set_option('display.max_columns', 500)
 
 def cols_d_to_h():
     try:
-        result_df = pd.DataFrame()
-        for i in range(2, -1, -1):
-            year = str(datetime.today().year - i)
-            url = "https://info.tase.co.il/Heb/Statistics/StatRes/" + year + "/Stat_202_l02_" + year + ".xlsx"
-            resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0, header=3)
-            df = df.loc[: 'הערות לטבלה:'].iloc[:-2]
-            index_lst = [x for x in df.index if not type(x) is int]
-            index_lst = [x for x in index_lst if len(str(x)) >7]
-            index_lst = [x for x in index_lst if not x.isnumeric()]
-            year_df = df.iloc[-len(index_lst):]
-            year_df.index = [str(x) + '/' + year for x in range(1, len(index_lst) +1)]
-            year_df = year_df[['מניות והמירים(1) סה"כ', 'אג"ח ממשלתי סה"כ הנפקות(2)', 'אג"ח ממשלתי פדיונות(3)', 'אג"ח ממשלתי גיוס נטו', 'אג"ח חברות סה"כ']]
-            year_df.index = ['0' + x if x.find('/') == 1 else x for x in year_df.index]
-            result_df = result_df.append(year_df)
-        return result_df
+        try:
+            result_df = pd.DataFrame()
+            for i in range(2, -1, -1):
+                year = str(datetime.today().year - i)
+                url = "https://info.tase.co.il/Heb/Statistics/StatRes/" + year + "/Stat_202_l02_" + year + ".xlsx"
+                resp = requests.get(url)
+                df = pd.read_excel(resp.content, index_col=0, header=3)
+                df = df.loc[: 'הערות לטבלה:'].iloc[:-2]
+                index_lst = [x for x in df.index if not type(x) is int]
+                index_lst = [x for x in index_lst if len(str(x)) >7]
+                index_lst = [x for x in index_lst if not x.isnumeric()]
+                year_df = df.iloc[-len(index_lst):]
+                year_df.index = [str(x) + '/' + year for x in range(1, len(index_lst) +1)]
+                year_df = year_df[['מניות והמירים(1) סה"כ', 'אג"ח ממשלתי סה"כ הנפקות(2)', 'אג"ח ממשלתי פדיונות(3)', 'אג"ח ממשלתי גיוס נטו', 'אג"ח חברות סה"כ']]
+                year_df.index = ['0' + x if x.find('/') == 1 else x for x in year_df.index]
+                result_df = result_df.append(year_df)
+            return result_df
+
+        except: ### If there is no data for current year
+            result_df = pd.DataFrame()
+            for i in range(2, 0, -1):
+                year = str(datetime.today().year - i)
+                url = "https://info.tase.co.il/Heb/Statistics/StatRes/" + year + "/Stat_202_l02_" + year + ".xlsx"
+                resp = requests.get(url)
+                df = pd.read_excel(resp.content, index_col=0, header=3)
+                df = df.loc[: 'הערות לטבלה:'].iloc[:-2]
+                index_lst = [x for x in df.index if not type(x) is int]
+                index_lst = [x for x in index_lst if len(str(x)) >7]
+                index_lst = [x for x in index_lst if not x.isnumeric()]
+                year_df = df.iloc[-len(index_lst):]
+                year_df.index = [str(x) + '/' + year for x in range(1, len(index_lst) +1)]
+                year_df = year_df[['מניות והמירים(1) סה"כ', 'אג"ח ממשלתי סה"כ הנפקות(2)', 'אג"ח ממשלתי פדיונות(3)', 'אג"ח ממשלתי גיוס נטו', 'אג"ח חברות סה"כ']]
+                year_df.index = ['0' + x if x.find('/') == 1 else x for x in year_df.index]
+                result_df = result_df.append(year_df)
+            return result_df
     except Exception as e:
         print('problem getting cols: D-H')
+
 
 def cols_i_to_k():
     try:
@@ -96,8 +116,8 @@ def cols_t_to_v():
     try:
         url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/n110.xls'
         resp = requests.get(url)
-        df = pd.read_excel(resp.content, index_col=-1)
-        df = df.iloc[:, -3:]
+        df = pd.read_excel(resp.content, index_col=-14)
+        df = df.iloc[:, -16:-13]
 
         ### Get column index ###
         temp = df.loc['תאריך':]
@@ -216,19 +236,35 @@ def cols_ab_to_ah():
 
 def col_ak():
     try:
-        result_df = pd.DataFrame()
-        for i in range(2,-1,-1):
-            year = str(datetime.today().year - i)
-            url = 'https://www.boi.org.il/he/BankingSupervision/Data/_layouts/boi/handlers/WebPartHandler.aspx?wp=ItemsAggregator&PageId=150&CqfDateFrom=01%2F01%2F' + year + '&CqfDateTo=31%2F12%2F' + year + '&_=1633337318236'
-            resp = requests.get(url)
-            soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
-            tab = soup.find("table", {"class": "s4-wpTopTable"})
-            year_df = pd.read_html(tab.prettify())[1]
-            year_df = year_df.drop_duplicates()
-            result_df = result_df.append(year_df, ignore_index=True)
+        try:
+            result_df = pd.DataFrame()
+            for i in range(2, -1, -1):
+                year = str(datetime.today().year - i)
+                url = 'https://www.boi.org.il/he/BankingSupervision/Data/_layouts/boi/handlers/WebPartHandler.aspx?wp=ItemsAggregator&PageId=150&CqfDateFrom=01%2F01%2F' + year + '&CqfDateTo=31%2F12%2F' + year + '&_=1633337318236'
+                resp = requests.get(url)
+                soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+                tab = soup.find("table", {"class": "s4-wpTopTable"})
+                year_df = pd.read_html(tab.prettify())[1]
+                year_df = year_df.drop_duplicates()
+                result_df = result_df.append(year_df, ignore_index=True)
 
-        result_df = result_df.set_index('תאריך')
-        return result_df
+            result_df = result_df.set_index('תאריך')
+            return result_df
+        except: ### If there is no data for current year
+            result_df = pd.DataFrame()
+            for i in range(2, 0, -1):
+                year = str(datetime.today().year - i)
+                url = 'https://www.boi.org.il/he/BankingSupervision/Data/_layouts/boi/handlers/WebPartHandler.aspx?wp=ItemsAggregator&PageId=150&CqfDateFrom=01%2F01%2F' + year + '&CqfDateTo=31%2F12%2F' + year + '&_=1633337318236'
+                resp = requests.get(url)
+                soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+                tab = soup.find("table", {"class": "s4-wpTopTable"})
+                year_df = pd.read_html(tab.prettify())[1]
+                year_df = year_df.drop_duplicates()
+                result_df = result_df.append(year_df, ignore_index=True)
+
+            result_df = result_df.set_index('תאריך')
+            return result_df
+
 
     except Exception as e:
         print('problem getting cols: AK: ' + str(e))
