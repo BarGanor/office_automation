@@ -47,52 +47,99 @@ def cols_d_to_h():
         print('problem getting cols: D-H')
 
 
-def cols_i_to_k():
+def cols_i_to_k_cdata():
     try:
-        current_month = datetime.today().month
-        current_year = datetime.today().year
+        try:
+            current_month = datetime.today().month
+            current_year = datetime.today().year
 
-        for month in range(current_month, 0, -1):
-            if month < 10:
-                month = '0' + str(month)
-            else:
-                month = str(month)
-
-            url = "https://www.cbs.gov.il/he/publications/doclib/" + str(current_year) + "/yarhon" + month + str(current_year % 100) + "/i2.xls"
-            resp = requests.get(url)
-            try:
-                df = pd.read_excel(resp.content, index_col=0)
-                df = df.dropna(how='all')
-                df.columns = df.iloc[7].fillna('').str.cat(' ' + df.iloc[8].fillna(''))
-                break
-            except Exception as e:
-                print('cols i-k: No Data For Month - ' + str(month))
-
-        df.index = df.index.fillna('').astype('string')
-        if df is not None:
-            df = df.loc[str(current_year - 1):]
-            df = df[['Total ']]
-            df.columns = ['מטבע חוץ', 'מטבע ישראלי']
-            col_i = df['מטבע ישראלי']
-            col_j = df['מטבע חוץ']
-            col_k = col_i + col_j
-            col_k.name = 'סהכ אשראי בנקאי'
-
-            result_df = pd.concat([col_i, col_j, col_k], axis=1).dropna(how='all')
-
-            temp = []
-            current_month = 1
-            for i in result_df.index:
-                if (i.isnumeric()):
-                    curr_year = int(i)
-                    current_month = 1
-                    temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
-                    current_month += 1
+            for month in range(current_month, 0, -1):
+                if month < 10:
+                    month = '0' + str(month)
                 else:
-                    temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
-                    current_month += 1
-            result_df.index = temp
-        return result_df.astype('int64')
+                    month = str(month)
+
+                url = f"https://www.cbs.gov.il/he/publications/doclib/{current_year}/yarhon{month}{str(current_year % 100)}/i2.xls"
+                resp = requests.get(url)
+                try:
+                    df = pd.read_excel(resp.content, index_col=0)
+                    df = df.dropna(how='all')
+                    df.columns = df.iloc[7].fillna('').str.cat(' ' + df.iloc[8].fillna(''))
+                    break
+                except Exception as e:
+                    print('cols i-k: No Data For Month - ' + str(month))
+
+            df.index = df.index.fillna('').astype('string')
+            if df is not None:
+                df = df.loc[str(current_year - 1):]
+                df = df[['Total ']]
+                df.columns = ['בנקים מסחריים ישראלים במטבע חוץ', 'בנקים מסחריים- מטבע ישראלי']
+                col_i = df['בנקים מסחריים- מטבע ישראלי']
+                col_j = df['בנקים מסחריים ישראלים במטבע חוץ']
+                col_k = col_i + col_j
+                col_k.name = 'סך הכל אשראי ציבור'
+
+                result_df = pd.concat([col_i, col_j, col_k], axis=1).dropna(how='all')
+
+                temp = []
+                current_month = 1
+                for i in result_df.index:
+                    if (i.isnumeric()):
+                        curr_year = int(i)
+                        current_month = 1
+                        temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
+                        current_month += 1
+                    else:
+                        temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
+                        current_month += 1
+                result_df.index = temp
+            return result_df.astype('int64')
+
+        except:
+            current_month = datetime.today().month
+            current_year = datetime.today().year
+
+            for month in range(current_month, 0, -1):
+                if month < 10:
+                    month = '0' + str(month)
+                else:
+                    month = str(month)
+
+                url = f"https://www.cbs.gov.il/he/publications/doclib/{current_year - 1}/yarhon12{str((current_year - 1) % 100)}/i2.xls"
+                resp = requests.get(url)
+                try:
+                    df = pd.read_excel(resp.content, index_col=0)
+                    df = df.dropna(how='all')
+                    df.columns = df.iloc[7].fillna('').str.cat(' ' + df.iloc[8].fillna(''))
+                    break
+                except Exception as e:
+                    print('cols i-k: No Data For Month - ' + str(month))
+
+            df.index = df.index.fillna('').astype('string')
+            if df is not None:
+                df = df.loc[str(current_year - 1):]
+                df = df[['Total ']]
+                df.columns = ['בנקים מסחריים ישראלים במטבע חוץ', 'בנקים מסחריים- מטבע ישראלי']
+                col_i = df['בנקים מסחריים- מטבע ישראלי']
+                col_j = df['בנקים מסחריים ישראלים במטבע חוץ']
+                col_k = col_i + col_j
+                col_k.name = 'סך הכל אשראי ציבור'
+
+                result_df = pd.concat([col_i, col_j, col_k], axis=1).dropna(how='all')
+
+                temp = []
+                current_month = 1
+                for i in result_df.index:
+                    if (i.isnumeric()):
+                        curr_year = int(i)
+                        current_month = 1
+                        temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
+                        current_month += 1
+                    else:
+                        temp.append(datetime(curr_year, current_month, 1).strftime('%m/%Y'))
+                        current_month += 1
+                result_df.index = temp
+            return result_df.astype('int64')
     except Exception as e:
         print('problem getting cols: I-K: ' + str(e))
 
