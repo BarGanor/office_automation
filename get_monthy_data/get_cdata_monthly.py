@@ -143,6 +143,7 @@ def cols_i_to_k_cdata():
     except Exception as e:
         print('problem getting cols: I-K: ' + str(e))
 
+
 def col_l():
     try:
         url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/d010.xls'
@@ -158,6 +159,7 @@ def col_l():
         return df
     except Exception as e:
         print('problem getting cols: L: ' +str(e))
+
 
 def cols_t_to_v():
     try:
@@ -187,6 +189,7 @@ def cols_t_to_v():
     except Exception as e:
         print('problem getting cols: T-V: ' + str(e))
 
+
 def cols_w_to_x():
     try:
         url = 'https://www.boi.org.il/he/BankingSupervision/Data/Documents/pribmash.xls'
@@ -201,7 +204,6 @@ def cols_w_to_x():
         return result_df.astype('string') + '%'
     except Exception as e:
         print('problem getting cols: W-X: '+ str(e))
-
 
 
 def col_y():
@@ -219,7 +221,6 @@ def col_y():
         return result_df
     except Exception as e:
         print('problem getting cols: Y: ' + str(e))
-
 
 
 def cols_z_to_aa():
