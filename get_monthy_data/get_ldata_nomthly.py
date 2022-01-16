@@ -44,6 +44,15 @@ def cols_k_to_r_ldata():
         print('problem getting col: K-R')
 
 
+def cols_s_ldata():
+    try:
+        df = cols_k_to_r_ldata()['סה"כ'] - cols_k_to_r_ldata()['מזה: מגזר עסקי']
+        df.name = 'סקטור שירותים ציבוריים'
+        return df
+    except Exception as e:
+        print('problem getting col: S')
+
+
 def cols_x_to_ba_ldata():
     try:
         series_id = {'col_x': '40000', 'col_y': '40001', 'col_z': '40003', 'col_aa': '40005',

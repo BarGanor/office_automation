@@ -83,8 +83,8 @@ def get_xdata_monthly(record_num):
 
 def get_ldata_monthly(record_num):
     print('Getting L_Data')
-    function_dict = {'C-J': cols_c_to_j_ldata(), 'K-R': cols_k_to_r_ldata(), 'X-BA': cols_x_to_ba_ldata(),
-                     'BF': col_bf_ldata(),
+    function_dict = {'C-J': cols_c_to_j_ldata(), 'K-R': cols_k_to_r_ldata(), 'S': cols_s_ldata(),
+                     'X-BA': cols_x_to_ba_ldata(), 'BF': col_bf_ldata(),
                      'BG': col_bg_ldata(), 'BH-BY': col_bh_to_by_ldata(),
                      'BZ': cols_bz_ldata(), 'CA': cols_ca_ldata(), 'CB-CG': cols_cb_to_cg_ldata(),
                      'CH-CU': cols_ch_to_cu_ldata(), 'CV-CX': col_cv_to_cx_ldata()}
