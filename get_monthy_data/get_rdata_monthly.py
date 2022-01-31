@@ -221,6 +221,9 @@ def cols_cz_to_db_rdata():
 
             else:
                 df[i] = df.index.quarter
-        return df.sort_index()
+
+        df = df.sort_index()
+        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        return df
     except Exception as e:
         print('problem getting col: CZ-DB')
