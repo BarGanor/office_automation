@@ -30,7 +30,7 @@ def col_z():
         df.name = 'אלפי תיירים, מנוכה עונתיות'
         return df
     except Exception as e:
-        print('problem getting col: Z')
+        print('problem getting col: Z' + str(e))
 
 
 def col_aa():
@@ -46,7 +46,7 @@ def col_aa():
         col.name = 'מקורי'
         return col
     except Exception as e:
-        print('problem getting col: AA')
+        print('problem getting col: AA' + str(e))
 
 
 def col_ab():
@@ -72,7 +72,7 @@ def col_ab():
         df.name = 'תיירים זרים'
         return df
     except Exception as e:
-        print('problem getting col: AB')
+        print('problem getting col: AB' + str(e))
 
 
 def col_ac():
@@ -98,7 +98,7 @@ def col_ac():
         df.name = 'ישראלים'
         return df
     except Exception as e:
-        print('problem getting col: AC')
+        print('problem getting col: AC' + str(e))
 
 
 def col_bj():
@@ -128,7 +128,7 @@ def col_bj():
         df = df.apply(lambda x: x.str.replace('.',','))
         return df
     except Exception as e:
-        print('problem getting col: BJ')
+        print('problem getting col: BJ' + str(e))
 
 
 def col_bp_to_bq():
@@ -141,4 +141,4 @@ def col_bp_to_bq():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: bp-bq')
+        print('problem getting col: bp-bq' + str(e))

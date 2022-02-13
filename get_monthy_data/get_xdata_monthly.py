@@ -84,7 +84,7 @@ def col_i_to_k_xdata():
 
         return df3
     except Exception as e:
-        print('problem getting cols: I-K')
+        print('problem getting cols: I-K' + str(e))
 
 
 def col_l_to_n():
@@ -97,7 +97,7 @@ def col_l_to_n():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: L-N')
+        print('problem getting col: L-N' + str(e))
 
 
 def col_p():
@@ -114,4 +114,4 @@ def col_p():
 
         return df
     except Exception as e:
-        print('problem getting col: p')
+        print('problem getting col: p' + str(e))

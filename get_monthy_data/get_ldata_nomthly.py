@@ -23,7 +23,7 @@ def cols_c_to_j_ldata():
         return df
 
     except Exception as e:
-        print('problem getting col: C-J')
+        print('problem getting col: C-J' + str(e))
 
 
 def cols_k_to_r_ldata():
@@ -41,7 +41,7 @@ def cols_k_to_r_ldata():
         return df
 
     except Exception as e:
-        print('problem getting col: K-R')
+        print('problem getting col: K-R' + str(e))
 
 
 def cols_s_ldata():
@@ -50,7 +50,7 @@ def cols_s_ldata():
         df.name = 'סקטור שירותים ציבוריים'
         return df
     except Exception as e:
-        print('problem getting col: S')
+        print('problem getting col: S' + str(e))
 
 
 def cols_x_to_ba_ldata():
@@ -86,7 +86,7 @@ def cols_x_to_ba_ldata():
                      'col_az', 'col_ba']
         return df
     except Exception as e:
-        print('problem getting col: X-BA')
+        print('problem getting col: X-BA' + str(e))
 
 
 def col_bf_ldata():
@@ -99,7 +99,7 @@ def col_bf_ldata():
 
         return df
     except Exception as e:
-        print('problem getting cols: BF')
+        print('problem getting cols: BF' + str(e))
 
 
 def col_bg_ldata():
@@ -122,7 +122,7 @@ def col_bg_ldata():
 
         return df
     except Exception as e:
-        print('problem getting cols: BG')
+        print('problem getting cols: BG' + str(e))
 
 
 def col_bh_to_by_ldata():
@@ -135,7 +135,7 @@ def col_bh_to_by_ldata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: BH-BY')
+        print('problem getting col: BH-BY' + str(e))
 
 
 def cols_bz_ldata():
@@ -151,7 +151,7 @@ def cols_bz_ldata():
             col.columns = {'value': 'משרות פנויות (אלפים)'}
             return col
     except Exception as e:
-        print('problem getting col: BZ')
+        print('problem getting col: BZ' + str(e))
 
 
 def cols_ca_ldata():
@@ -180,7 +180,7 @@ def cols_ca_ldata():
 
         return df
     except Exception as e:
-        print('problem getting col: CA')
+        print('problem getting col: CA' + str(e))
 
 
 def cols_cb_to_cg_ldata():
@@ -202,7 +202,7 @@ def cols_cb_to_cg_ldata():
                      'col_cf', 'col_cg']
         return df
     except Exception as e:
-        print('problem getting col: CB-CG')
+        print('problem getting col: CB-CG' + str(e))
 
 
 def cols_ch_to_cu_ldata():
@@ -228,7 +228,7 @@ def cols_ch_to_cu_ldata():
                      'col_cr', 'col_cs', 'col_ct', 'col_cu']
         return df
     except Exception as e:
-        print('problem getting col: CH-CU')
+        print('problem getting col: CH-CU' + str(e))
 
 
 def col_cv_to_cx_ldata():
@@ -241,4 +241,4 @@ def col_cv_to_cx_ldata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: CV-CX')
+        print('problem getting col: CV-CX' + str(e))

@@ -27,7 +27,7 @@ def cols_c_to_d_rdata():
         df.columns = ['מדדי ערך סל המכירות של רשתות השיווק במחירים קבועים ללא דלק וכולל מזון (מחירים קבועים בסיס(100=2020), מנוכה', 'מדדי ערך סל המכירות של רשתות השיווק במחירים קבועים ללא דלק וכלל מזון (100=2020), מקורי']
         return df
     except Exception as e:
-        print('problem getting col: C-D')
+        print('problem getting col: C-D' + str(e))
 
 
 def cols_e_to_r_rdata():
@@ -52,7 +52,7 @@ def cols_e_to_r_rdata():
                     ,'col_o','col_p','col_q','col_r']
         return df
     except Exception as e:
-        print('problem getting col: E-R')
+        print('problem getting col: E-R' + str(e))
 
 
 # I used iloc method -- It's better to use loc method instead of iloc, but i didn't succeed. (Eliya Picard)
@@ -90,7 +90,7 @@ def cols_t_to_u_rdata():
         df.columns = ['דירות שנמכרו מנוכי עונתיות בקצב שנתי', 'דירות למכירה בסוף תקופה מנוכה עונתיות']
         return df
     except Exception as e:
-        print('problem getting col: T-U')
+        print('problem getting col: T-U' + str(e))
 
 
 # Empty columns
@@ -118,7 +118,7 @@ def cols_v_to_cf_rdata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: V-CF')
+        print('problem getting col: V-CF' + str(e))
 
 
 def cols_cg_to_ch_rdata():
@@ -140,7 +140,7 @@ def cols_cg_to_ch_rdata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: CG-CH')
+        print('problem getting col: CG-CH' + str(e))
 
 
 # Empty columns
@@ -162,7 +162,7 @@ def cols_ci_to_cl_rdata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: CI-CL')
+        print('problem getting col: CI-CL' + str(e))
 
 
 def cols_cm_rdata():
@@ -178,7 +178,7 @@ def cols_cm_rdata():
         col.columns = ['מדד פדיון ענפי המשק (מקורי) 100=2011']
         return col
     except Exception as e:
-        print('problem getting col: CM')
+        print('problem getting col: CM' + str(e))
 
 
 # Empty columns
@@ -200,7 +200,7 @@ def cols_cn_to_cy_rdata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: CN-CY')
+        print('problem getting col: CN-CY' + str(e))
 
 
 def cols_cz_to_db_rdata():
@@ -226,4 +226,4 @@ def cols_cz_to_db_rdata():
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         return df
     except Exception as e:
-        print('problem getting col: CZ-DB')
+        print('problem getting col: CZ-DB' + str(e))

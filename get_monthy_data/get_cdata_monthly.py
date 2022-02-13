@@ -44,7 +44,7 @@ def cols_d_to_h():
                 result_df = result_df.append(year_df)
             return result_df
     except Exception as e:
-        print('problem getting cols: D-H')
+        print('problem getting cols: D-H' + str(e))
 
 
 def cols_i_to_k_cdata():
