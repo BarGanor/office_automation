@@ -6,18 +6,17 @@ from datetime import date
 
 def get_treasury_data(record_num):
     todays_year = date.today().year
-    url = 'https://www.treasury.gov/resource-center/data-chart-center/interest-rates/Pages/TextView.aspx?data=yieldYear&year=' + str(todays_year)
-    treasury_response = requests.get(url).content
-    soup = BeautifulSoup(treasury_response, features="lxml")
-    treasury_data = soup.find("table", {"class": "t-chart"}).prettify()
-    treasury_data = pd.read_html(treasury_data)[0]
-    treasury_data = treasury_data.set_index('Date')
-    treasury_data = treasury_data[['1 yr', '10 yr']]
-    treasury_data = treasury_data.iloc[-record_num:]
-    treasury_data.index = pd.to_datetime(treasury_data.index)
-    treasury_data = treasury_data.sort_index()
-    treasury_data.index = treasury_data.index.strftime('%d/%m/%Y')
+    df = pd.DataFrame()
+    for year in [todays_year - 1, todays_year]:
+        url = f"https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/{year}/all?type=daily_treasury_yield_curve&field_tdr_date_value={year}&page&_format=csv"
+        df1 = pd.read_csv(url, index_col=0)
+        df1 = df1[['1 Yr', '10 Yr']]
+        df1.index = pd.to_datetime(df1.index)
+        df1 = df1.sort_index()
+        df1.index = df1.index.strftime('%d/%m/%Y')
+        df = pd.concat([df, df1], axis=0)
 
-    return treasury_data
+    df = df.iloc[-record_num:]
+    return df
 
 
