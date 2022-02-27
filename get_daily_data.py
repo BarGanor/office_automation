@@ -64,6 +64,8 @@ def get_htdata_daily(record_num):
                     else:
                         daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
 
+
+        daily_il_df["מנורמל לאפריל 2011 ת'א 100"] = (daily_il_df['Tel 125']/1215.49)*100
         return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
     except Exception as e:
         print('Problem getting htdata: ' + str(e))
