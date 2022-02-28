@@ -71,9 +71,9 @@ def get_pdata_daily(record_num):
             print('There was a problem concatenating columns:' + cols + ' for pdata.')
             print('The error: ' + str(e))
 
-    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df.index = pd.to_datetime(df.index, format='%d/%m/%Y')
     df = df.sort_index()
-    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
     return df.iloc[-record_num:]
 
 
@@ -88,7 +88,7 @@ def get_mdata_daily(record_num):
 
 def get_dailyil_daily(record_num):
     print('Getting Dailyil_Data')
-    function_dict = {'D-I': cols_d_to_i_dailyil_daily()}
+    function_dict = {'D-I': cols_d_to_i_dailyil_daily(record_num)}
 
     df = pd.DataFrame()
 
@@ -100,15 +100,16 @@ def get_dailyil_daily(record_num):
             print('There was a problem concatenating columns:' + cols + ' for DAILY_IL data.')
             print('The error: ' + str(e))
 
-    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df.index = pd.to_datetime(df.index, format='%d/%m/%Y')
     df = df.sort_index()
-    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
     return df.iloc[-record_num:]
 
 
 def get_daily_us_daily(record_num):
     print('Getting Daily_us_Data')
-    function_dict = {'D-E': cols_d_to_e_daily_us_daily(), 'F-X': cols_f_to_x_daily_us_daily()}
+    function_dict = {'D-E': cols_d_to_e_daily_us_daily(),
+                     'F-X': cols_f_to_x_daily_us_daily(record_num)}
 
     df = pd.DataFrame()
 
@@ -120,15 +121,16 @@ def get_daily_us_daily(record_num):
             print('There was a problem concatenating columns:' + cols + ' for DAILY_US data.')
             print('The error: ' + str(e))
 
-    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df.index = pd.to_datetime(df.index, format='%d/%m/%Y')
     df = df.sort_index()
-    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
     return df.iloc[-record_num:]
 
 
 def get_daily_uk_daily(record_num):
     print('Getting Daily_uk_Data')
-    function_dict = {'D-S': cols_d_to_s_daily_us_daily(), 'T': get_col_t_daily_uk_daily()}
+    function_dict = {'D-S': cols_d_to_s_daily_us_daily(),
+                     'T': get_col_t_daily_uk_daily(record_num)}
 
     df = pd.DataFrame()
 
@@ -140,9 +142,9 @@ def get_daily_uk_daily(record_num):
             print('There was a problem concatenating columns:' + cols + ' for DAILY_UK data.')
             print('The error: ' + str(e))
 
-    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df.index = pd.to_datetime(df.index, format='%d/%m/%Y')
     df = df.sort_index()
-    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
     return df.iloc[-record_num:]
 
 
