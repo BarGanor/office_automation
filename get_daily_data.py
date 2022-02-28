@@ -1,10 +1,18 @@
-from get_data_from_sites.get_tase_data import *
-from get_data_from_sites.get_investing_data import *
-from get_data_from_sites.get_boi_data import *
-from get_data_from_sites.get_trasury_data import *
-from get_data_from_sites.get_eia_data import *
-
 from pandas import ExcelWriter
+
+from get_daily_data.get_daily_uk_daily import *
+from get_daily_data.get_daily_us_daily import *
+from get_daily_data.get_dailyil_daily import *
+from get_daily_data.get_cdata_daily import *
+from get_daily_data.get_pdata_daily import *
+
+from get_data_from_sites.get_trasury_data import *
+from get_data_from_sites.get_boi_data import *
+
+
+
+pd.set_option('display.max_rows', 500)
+pd.set_option('display.max_columns', 500)
 
 
 def save_xls(dict_df, path):
@@ -19,57 +27,25 @@ def save_xls(dict_df, path):
 
 
 def get_cdata_daily(record_num):
-    try:
-        print('getting cdata')
-        index_names = ['tel bond 20', 'tel bond 40', 'gov bond', 'tel aviv banks', 'tel bond 60']
+    print('Getting C_Data')
+    function_dict = {'D-Y': cols_d_to_y_cdata_daily(), 'Z-AA': cols_z_to_aa_cdata_daily(),
+                     'AB-AH': cols_ab_to_ah_cdata_daily(), 'AI': cols_ai_cdata_daily(),
+                     'AJ-AK': cols_aj_to_ak_cdata_daily(), 'AL-AM': cols_al_to_am_cdata_daily()}
 
-        cdata_daily_df = pd.DataFrame()
-        for index in index_names:
-            index_data = get_tase_data(index).iloc[-record_num:]
-            index_df = pd.DataFrame({index: index_data})
+    df = pd.DataFrame()
 
-            cdata_daily_df = pd.concat([cdata_daily_df, index_df], axis=1)
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for cdata.')
+            print('The error: ' + str(e))
 
-        return cdata_daily_df
-    except Exception as e:
-        print('problem getting cdata:' + str(e))
-        return None
-
-def get_htdata_daily(record_num):
-    try:
-        print('getting htdata')
-        daily_il = ['Tel 35', 'Tel 125']
-        daily_us = ['nasdaq', 'sp 500', 'EEM', 'vix']
-        daily_uk = ['FTSE']
-        daily_all = [daily_il, daily_us, daily_uk]
-
-        daily_il_df = pd.DataFrame()
-        daily_us_df = pd.DataFrame()
-        daily_uk_df = pd.DataFrame()
-
-        for daily in daily_all:
-            for index in daily:
-
-                if daily is daily_il:
-                    index_data = get_tase_data(index).iloc[-record_num:]
-                    index_df = pd.DataFrame({index: index_data})
-
-                    daily_il_df = pd.concat([daily_il_df, index_df], axis=1)
-                else:
-                    index_data = get_investing_data(index).iloc[-record_num:]
-                    index_df = pd.DataFrame({index: index_data['Price']})
-
-                    if daily is daily_us:
-                        daily_us_df = pd.concat([daily_us_df, index_df], axis=1)
-                    else:
-                        daily_uk_df = pd.concat([daily_uk_df, index_df], axis=1)
-
-
-        daily_il_df["מנורמל לאפריל 2011 ת'א 100"] = (daily_il_df['Tel 125']/1215.49)*100
-        return {'daily_il': daily_il_df, 'daily_us': daily_us_df, 'daily_uk': daily_uk_df}
-    except Exception as e:
-        print('Problem getting htdata: ' + str(e))
-        return  None
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
 
 
 def get_xdata_daily(record_num):
@@ -80,21 +56,26 @@ def get_xdata_daily(record_num):
         print('Problem getting xdata: ' + str(e))
         return None
 
+
 def get_pdata_daily(record_num):
-    try:
-        print('getting pdata')
-        index_names = ['foodstuffs', 'industrials', 'textiles', 'metals']
-        urls = ['https://www.eia.gov/dnav/pet/hist/rbrteD.htm', 'https://www.eia.gov/dnav/pet/hist/rwtcD.htm']
-        table_names = ['Europe Brent Spot Price FOB  (Dollars per Barrel)', 'Cushing, OK WTI Spot Price FOB  (Dollars per Barrel)']
+    print('Getting P_Data')
+    function_dict = {'D-E': cols_d_to_e_pdata_daily(), 'F-V': cols_f_to_v_pdata_daily()}
 
-        result_df = pd.DataFrame()
-        eia_data = get_eia_data(urls=urls, table_names=table_names, record_num=7)
-        result_df = pd.concat([result_df, eia_data], axis=1)
+    df = pd.DataFrame()
 
-        return result_df
-    except Exception as e:
-        print('Problem getting pdata:' + str(e))
-        return None
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for pdata.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
 
 def get_mdata_daily(record_num):
     try:
@@ -104,11 +85,75 @@ def get_mdata_daily(record_num):
         print('problem getting mdata: ' + str(e))
         return None
 
+
+def get_dailyil_daily(record_num):
+    print('Getting Dailyil_Data')
+    function_dict = {'D-I': cols_d_to_i_dailyil_daily()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for DAILY_IL data.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
+def get_daily_us_daily(record_num):
+    print('Getting Daily_us_Data')
+    function_dict = {'D-E': cols_d_to_e_daily_us_daily(), 'F-X': cols_f_to_x_daily_us_daily()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for DAILY_US data.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
+def get_daily_uk_daily(record_num):
+    print('Getting Daily_uk_Data')
+    function_dict = {'D-S': cols_d_to_s_daily_us_daily(), 'T': get_col_t_daily_uk_daily()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for DAILY_UK data.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
 def get_daily_data(record_num):
     # Create a Pandas Excel writer using XlsxWriter as the engine.
-    htdata_dict = get_htdata_daily(record_num)
-    func_dict = {'cdata': get_cdata_daily(record_num), 'daily_il': htdata_dict.get('daily_il'), 'daily_us': htdata_dict.get('daily_us'),
-                 'daily_uk': htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num),
-                 'pdata': get_pdata_daily(10)}
+    func_dict = {'cdata': get_cdata_daily(record_num),
+                 'daily_il': get_dailyil_daily(record_num),
+                 'daily_us': get_daily_us_daily(record_num),
+                 'daily_uk': get_daily_uk_daily(record_num),
+                 'mdata': get_mdata_daily(record_num),
+                 'xdata': get_xdata_daily(record_num),
+                 'pdata': get_pdata_daily(record_num)}
     return func_dict
 
