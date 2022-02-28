@@ -33,7 +33,7 @@ def cols_f_to_v_pdata_daily():
 
         df = pd.DataFrame(columns=cols_name, index=index_col)
         df = df.fillna("").sort_index()
-        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
         return df
     except Exception as e:
         print('problem getting col: F-V' + str(e))
