@@ -10,7 +10,7 @@ def cols_d_to_s_daily_us_daily():
         today = datetime(date.today().year, date.today().month,
                                  date.today().day).strftime('%d/%m/%Y')
         dtObj = datetime.strptime(today, '%d/%m/%Y')
-        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 60, 1)]
+        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 30, 1)]
         cols_name = []
         for first_char in string.ascii_uppercase:
             if first_char <= 'S' and first_char >= 'D':

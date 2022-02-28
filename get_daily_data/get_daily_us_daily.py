@@ -12,7 +12,7 @@ def cols_d_to_e_daily_us_daily():
         today = datetime(date.today().year, date.today().month,
                                  date.today().day).strftime('%d/%m/%Y')
         dtObj = datetime.strptime(today, '%d/%m/%Y')
-        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 60, 1)]
+        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 30, 1)]
         cols_name = []
         for first_char in string.ascii_uppercase:
             if first_char <= 'E' and first_char >= 'D':
@@ -32,7 +32,7 @@ def cols_i_daily_us_daily():
         today = datetime(date.today().year, date.today().month,
                                  date.today().day).strftime('%d/%m/%Y')
         dtObj = datetime.strptime(today, '%d/%m/%Y')
-        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 60, 1)]
+        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 30, 1)]
         cols_name = []
         for first_char in string.ascii_uppercase:
             if first_char <= 'I' and first_char >= 'I':
@@ -52,7 +52,7 @@ def cols_k_to_r_daily_us_daily():
         today = datetime(date.today().year, date.today().month,
                                  date.today().day).strftime('%d/%m/%Y')
         dtObj = datetime.strptime(today, '%d/%m/%Y')
-        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 60, 1)]
+        index_col = [(dtObj - relativedelta(days=i)).date() for i in range(1, 30, 1)]
         cols_name = []
         for first_char in string.ascii_uppercase:
             if first_char <= 'R' and first_char >= 'K':
