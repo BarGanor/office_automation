@@ -1,5 +1,6 @@
 from pandas import ExcelWriter
 
+from get_daily_data.get_daily_euro_daily import *
 from get_daily_data.get_daily_uk_daily import *
 from get_daily_data.get_daily_us_daily import *
 from get_daily_data.get_dailyil_daily import *
@@ -153,6 +154,7 @@ def get_daily_data(record_num):
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     func_dict = {'cdata': get_cdata_daily(record_num),
                  'daily_il': get_dailyil_daily(record_num),
+                 'daily_euro': get_daily_euro_daily(record_num),
                  'daily_us': get_daily_us_daily(record_num),
                  'daily_uk': get_daily_uk_daily(record_num),
                  'mdata': get_mdata_daily(record_num),
