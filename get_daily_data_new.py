@@ -59,7 +59,8 @@ def get_xdata_daily(record_num):
 
 def get_pdata_daily(record_num):
     print('Getting P_Data')
-    function_dict = {'D-E': cols_d_to_e_pdata_daily(), 'F-V': cols_f_to_v_pdata_daily()}
+    function_dict = {'D-E': cols_d_to_e_pdata_daily(record_num),
+                     'F-V': cols_f_to_v_pdata_daily()}
 
     df = pd.DataFrame()
 
