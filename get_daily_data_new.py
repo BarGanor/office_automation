@@ -28,9 +28,11 @@ def save_xls(dict_df, path):
 
 def get_cdata_daily(record_num):
     print('Getting C_Data')
-    function_dict = {'D-Y': cols_d_to_y_cdata_daily(), 'Z-AA': cols_z_to_aa_cdata_daily(),
-                     'AB-AH': cols_ab_to_ah_cdata_daily(), 'AI': cols_ai_cdata_daily(),
-                     'AJ-AK': cols_aj_to_ak_cdata_daily(), 'AL-AM': cols_al_to_am_cdata_daily()}
+    function_dict = {'Z-AA': cols_z_to_aa_cdata_daily(),
+                     'AB-AH': cols_ab_to_ah_cdata_daily(),
+                     'AI': cols_ai_cdata_daily(),
+                     'AJ-AK': cols_aj_to_ak_cdata_daily(),
+                     'AL-AM': cols_al_to_am_cdata_daily()}
 
     df = pd.DataFrame()
 
@@ -109,8 +111,7 @@ def get_dailyil_daily(record_num):
 
 def get_daily_us_daily(record_num):
     print('Getting Daily_us_Data')
-    function_dict = {'D-E': cols_d_to_e_daily_us_daily(),
-                     'F-X': cols_f_to_x_daily_us_daily(record_num)}
+    function_dict = {'F-X': cols_f_to_x_daily_us_daily(record_num)}
 
     df = pd.DataFrame()
 
@@ -130,8 +131,7 @@ def get_daily_us_daily(record_num):
 
 def get_daily_uk_daily(record_num):
     print('Getting Daily_uk_Data')
-    function_dict = {'D-S': cols_d_to_s_daily_us_daily(),
-                     'T': get_col_t_daily_uk_daily(record_num)}
+    function_dict = {'T': get_col_t_daily_uk_daily(record_num)}
 
     df = pd.DataFrame()
 
