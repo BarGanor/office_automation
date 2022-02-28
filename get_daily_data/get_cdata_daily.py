@@ -19,7 +19,7 @@ def cols_d_to_y_cdata_daily():
 
         df = pd.DataFrame(columns=cols_name, index=index_col)
         df = df.fillna("").sort_index()
-        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
         return df
     except Exception as e:
         print('problem getting col: D-Y' + str(e))
@@ -57,7 +57,7 @@ def cols_ab_to_ah_cdata_daily():
 
         df = pd.DataFrame(columns=cols_name, index=index_col)
         df = df.fillna("").sort_index()
-        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
         return df
     except Exception as e:
         print('problem getting col: AB-AH' + str(e))
@@ -94,8 +94,8 @@ def cols_aj_to_ak_cdata_daily():
                         cols_name.append(first_char + second_char)
 
         df = pd.DataFrame(columns=cols_name, index=index_col)
-        df = df.fillna("").sort_index()
-        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df = df.fillna(" ").sort_index()
+        df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
         return df
     except Exception as e:
         print('problem getting col: AJ-AK' + str(e))
@@ -115,5 +115,6 @@ def cols_al_to_am_cdata_daily():
         return cols_al_to_am_cdata_daily_df
     except Exception as e:
         print('problem getting cols: AL-AM' + str(e))
+
 
 

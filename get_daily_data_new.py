@@ -42,9 +42,9 @@ def get_cdata_daily(record_num):
             print('There was a problem concatenating columns:' + cols + ' for cdata.')
             print('The error: ' + str(e))
 
-    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df.index = pd.to_datetime(df.index, format='%d/%m/%Y')
     df = df.sort_index()
-    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df.index = pd.to_datetime(df.index).strftime('%d/%m/%Y')
     return df.iloc[-record_num:]
 
 
