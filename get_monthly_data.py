@@ -1,5 +1,6 @@
 from pandas import ExcelWriter
 
+from get_monthy_data.get_pdata_monthly import *
 from get_monthy_data.get_cdata_monthly import *
 from get_monthy_data.get_ft_data_monthly import *
 from get_monthy_data.get_edata_monthly import *
@@ -131,10 +132,30 @@ def get_rdata_monthly(record_num):
     return df.iloc[-record_num:]
 
 
+def get_pdata_monthly(record_num):
+    print('Getting P_Data')
+    function_dict = {'G-T': cols_g_to_t_pdata()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for pdata.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
 def get_monthly_data(record_num):
     func_dict = {'cdata': get_cdata_monthly(record_num), 'ftdata': get_ft_data_monthly(record_num),
                  'edata': get_edata_monthly(record_num), 'xdata': get_xdata_monthly(record_num),
-                 'ldata': get_ldata_monthly(record_num),
+                 'ldata': get_ldata_monthly(record_num), 'pdata': get_pdata_monthly(record_num),
                  'rdata': get_rdata_monthly(record_num)}
 
     return func_dict
