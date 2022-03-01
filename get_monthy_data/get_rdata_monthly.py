@@ -47,9 +47,14 @@ def cols_e_to_r_rdata():
             col = col.sort_index()
             col.index = col.index.strftime('%m/%Y')
             df = pd.concat([df, col], axis=1)
-        df.columns = ['col_e', 'col_f', 'col_g', 'col_h',
-                     'col_i', 'col_j','col_k','col_l','col_m','col_n'
-                    ,'col_o','col_p','col_q','col_r']
+        df.columns = ['מוצרים ושירותים אחרים', 'מזון ומשקאות (כולל שירותי אוכל)',
+                      'מוצרי תעשייה', 'שירותים',
+                     'סך הכל', 'מדד ערך רכישות בכרטיסי אשראי (מקורי)',
+                      'פדיון - כל ענפי הכלכלה',
+                      'פדיון- מסחר סיטוני וקמעוני','סה"כ המדד (נתונים מקוריים במחירי 2011)',
+                      'סה"כ המדד (מנוכה)'
+                    ,'תעשיות טכנולוגיה עילית','תעשיות טכנולוגיה מעורבת עילית',
+                      'תעשיות טכנולוגיה מעורבת מסורתית','תעשיות טכנולוגיה מסורתית']
         return df
     except Exception as e:
         print('problem getting col: E-R' + str(e))
