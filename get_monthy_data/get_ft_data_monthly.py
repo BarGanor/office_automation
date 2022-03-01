@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 from datetime import date
+from dateutil.relativedelta import relativedelta
 
 
 def cols_c_to_bi_rdata():
@@ -79,4 +80,34 @@ def col_cb_ftdata():
             return df
     except Exception as e:
         print('problem getting col: CB ' + str(e))
+
+
+def col_dg_ftdata():
+    try:
+        today = date.today()
+        three_month_ago = (today + relativedelta(months=-3))
+        year = today.year
+        month = today.month
+        three_month_ago_name = three_month_ago.strftime("%B")
+        if month >= 4:
+            url = f'https://www.cpb.nl/sites/default/files/omnidownload/CPB-World-Trade-Monitor-{three_month_ago_name}-{year}.xlsx'
+            resp = requests.get(url)
+            df = pd.read_excel(resp.content, index_col=1, header=3).transpose()
+            df = df.loc[:,"World trade"].dropna(axis=0, how='any').iloc[1:,0]
+            df.index = pd.to_datetime(df.index, format = '%YM%m')
+            df = df.sort_index()
+            df.index = df.index.strftime('%m/%Y')
+
+            return df
+        else:
+            url = f'https://www.cpb.nl/sites/default/files/omnidownload/CPB-World-Trade-Monitor-{three_month_ago_name}-{year-1}.xlsx'
+            resp = requests.get(url)
+            df = pd.read_excel(resp.content, index_col=1, header=3).transpose()
+            df = df.loc[:,"World trade"].dropna(axis=0, how='any').iloc[1:,0]
+            df.index = pd.to_datetime(df.index, format = '%YM%m')
+            df = df.sort_index()
+            df.index = df.index.strftime('%m/%Y')
+            return df
+    except Exception as e:
+        print('problem getting col: DG ' + str(e))
 
