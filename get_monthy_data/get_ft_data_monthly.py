@@ -114,7 +114,8 @@ def col_dg_ftdata():
 
 def cols_dh_to_ev_ftdata():
     try:
-        series_id = {'col_dh': '624356', 'col_di': '624425', 'col_dk': '624426', 'col_dl': '624350',
+        series_id = {'col_dh': '624356', 'col_di': '624425', 'col_dj': '624355',
+                     'col_dk': '624426', 'col_dl': '624350',
                      'col_dn': '624324',
                      'col_do': '624412', 'col_dp': '624354',
                      'col_dq': '624428', 'col_dr': '624175', 'col_ds': '624406', 'col_dt': '624345',
@@ -138,7 +139,7 @@ def cols_dh_to_ev_ftdata():
             col = col.sort_index()
             col.index = col.index.strftime('%m/%Y')
             df = pd.concat([df, col], axis=1)
-        df.columns = ['תעשייה, כרייה וחציבה - מקורי', 'תעשייה, כרייה וחציבה - מנוכה',
+        df.columns = ['תעשייה, כרייה וחציבה - מקורי', 'תעשייה, כרייה וחציבה - מנוכה','תעשייה, כרייה וחציבה ללא יהלומים מעובדים - מקורי',
                       'תעשייה, כרייה וחציבה ללא יהלומים מעובדים - מנוכה', 'כרייה וחציבה - מקורי',
                      'עיבוד יהלומים - מקורי',
                      'עיבוד יהלומים - מנוכה', 'תעשייה ללא יהלומים - מקורי',
@@ -160,5 +161,5 @@ def cols_dh_to_ev_ftdata():
                      'מוצרי עץ, שעם וקש - מנוכה', 'כלי נגינה משחקים וציוד ספורט - מקורי']
         return df
     except Exception as e:
-        print('problem getting col: X-BA' + str(e))
+        print('problem getting col: X-BA ' + str(e))
 
