@@ -37,7 +37,7 @@ def get_key_by_value(roman_number):
     return [name for name, age in roman_month.items() if age == roman_number][0]
 
 
-def col_z_to_aa_edata():
+def col_z_edata():
     try:
         curr_year = date.today().year
 
