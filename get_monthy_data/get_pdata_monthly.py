@@ -75,3 +75,20 @@ def col_aa_pdata():
         return df
     except Exception as e:
         print('problem getting cols: AA ' + str(e))
+
+
+def col_ab_pdata():
+    try:
+        url = 'https://beta.bls.gov/dataViewer/view/timeseries/CUSR0000SA0L1E'
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+        table = soup.find("table", {"id": 'seriesDataTable1'}).prettify()
+        df = pd.read_html(table, index_col=0)[0].dropna( how='all')
+        df['date'] = df['Period'].map(str) + '/'+ df.index.map(str)
+        df['date'] = df['date'].replace({'M': ''}, regex = True)
+        df.index = df['date']
+        df = df.loc[:, "Value"]
+
+        return df
+    except Exception as e:
+        print('problem getting cols: ABb ' + str(e))
