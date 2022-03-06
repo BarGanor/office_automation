@@ -167,12 +167,24 @@ def cols_t_to_v():
         resp = requests.get(url)
         df = pd.read_excel(resp.content, index_col=-14)
         df = df.iloc[:, -16:-13]
-        df = df.loc['(מיליוני ש"ח)':,:].iloc[1:50,:]
+
+        ### Get column index ###
+        temp = df.loc['תאריך':]
+        temp = temp.loc[pd.isna(temp.index)]
+
+        col_index = []
+        for i in range(3):
+            col = temp.iloc[:, i]
+            col_index.append(col.fillna(' ').str.cat(sep=' '))
+        # #########################
+
+        df.columns = col_index
+        df = df[df.index.notnull()]
+        df = df.loc['Date':].iloc[1:31, :]
+        df = df.dropna(how='all')
         df = df.sort_index()
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
         df = df[df.columns[::-1]]
-        df.columns = ['סכום האשראי בריבית קבועה Amount of credit at fixed interest','סכום האשראי בריבית משתנה Amount of credit at variable interest','Cpi - indexed segment סה"כ Total']
-
         return df
     except Exception as e:
         print('problem getting cols: T-V: ' + str(e))
