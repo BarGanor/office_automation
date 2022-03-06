@@ -136,7 +136,7 @@ def col_aw_pdata():
         for year in range(curr_year-4,curr_year+1,1):
             url = f'https://www.gov.il/BlobFolder/generalpage/fuel_price_historycal/he/stationprice{year}.xlsx'
             resp = requests.get(url)
-            col = pd.read_excel(resp.content,index_col=0,header=5)
+            col = pd.read_excel(resp.content, engine = "openpyxl", index_col=0,header=5)
             col = col.dropna(how='all').loc[:,"בנזין 95 אוקטן נטול עופרת"]
             col.index = pd.to_datetime(col.index).strftime('%m/%Y')
             df = pd.concat([df, col], axis=0)
