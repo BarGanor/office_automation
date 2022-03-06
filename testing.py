@@ -116,3 +116,33 @@ def get_daily_data(record_num):
                  'daily_uk': htdata_dict.get('daily_uk'), 'mdata': get_mdata_daily(record_num), 'xdata': get_xdata_daily(record_num),
                  'pdata': get_pdata_daily(10)}
     return func_dict
+
+
+
+def cols_t_to_v():
+    try:
+        url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/n110.xls'
+        resp = requests.get(url)
+        df = pd.read_excel(resp.content, index_col=-14)
+        df = df.iloc[:, -16:-13]
+
+        ### Get column index ###
+        temp = df.loc['תאריך':]
+        temp = temp.loc[pd.isna(temp.index)]
+
+        col_index = []
+        for i in range(3):
+            col = temp.iloc[:, i]
+            col_index.append(col.fillna(' ').str.cat(sep=' '))
+        # #########################
+
+        df.columns = col_index
+        df = df[df.index.notnull()]
+        df = df.loc['Date':].iloc[1:31, :]
+        df = df.dropna(how='all')
+        df = df.sort_index()
+        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df = df[df.columns[::-1]]
+        return df
+    except Exception as e:
+        print('problem getting cols: T-V: ' + str(e))
