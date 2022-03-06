@@ -15,7 +15,7 @@ def get_curr_year_list_2_digit(year):
     return curr_year_list_2_digit
 
 
-def get_message_number(year,monthName):
+def get_message_number_tourist(year,monthName):
     url = f'https://www.cbs.gov.il/en/mediarelease/Pages/{year}/Visitor-Arrivals-to-Israel-in-{monthName}-{year}.aspx'
     resp = requests.get(url)
     soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
@@ -45,7 +45,7 @@ def col_z_edata():
         two_months_ago = (datetime.today() + relativedelta(months=-2)).month
         two_months_ago_name = (datetime.today() + relativedelta(months=-2)).strftime("%B")
         if two_months_ago in ['1', '2']:
-            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year - 1}/{get_message_number(curr_year - 1, two_months_ago_name)}/28_{get_curr_year_list_2_digit(curr_year - 1)}_{get_message_number(curr_year - 1, two_months_ago_name)}t2.xls'
+            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year - 1}/{get_message_number_tourist(curr_year - 1, two_months_ago_name)}/28_{get_curr_year_list_2_digit(curr_year - 1)}_{get_message_number_tourist(curr_year - 1, two_months_ago_name)}t2.xls'
             resp = requests.get(url)
             df = pd.read_excel(resp.content).dropna(how='all', axis=1).dropna(how='all', axis=0)
             df['TABLE 2. TOURIST ARRIVALS IN ISRAEL (1)'] = df['TABLE 2. TOURIST ARRIVALS IN ISRAEL (1)'].ffill()
@@ -70,7 +70,7 @@ def col_z_edata():
             df.index = index_col
             return df
         else:
-            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number(curr_year, two_months_ago_name)}/28_{get_curr_year_list_2_digit(curr_year)}_{get_message_number(curr_year, two_months_ago_name)}t2.xls'
+            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_tourist(curr_year, two_months_ago_name)}/28_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_tourist(curr_year, two_months_ago_name)}t2.xls'
             resp = requests.get(url)
             df = pd.read_excel(resp.content).dropna(how='all', axis=1).dropna(how='all', axis=0)
             df['TABLE 2. TOURIST ARRIVALS IN ISRAEL (1)'] = df['TABLE 2. TOURIST ARRIVALS IN ISRAEL (1)'].ffill()
