@@ -91,7 +91,7 @@ def col_ab_pdata():
 
         return df
     except Exception as e:
-        print('problem getting cols: ABb ' + str(e))
+        print('problem getting cols: AB ' + str(e))
 
 
 def cols_ac_pdata():
@@ -109,5 +109,6 @@ def cols_ac_pdata():
         col = col.sort_index()
         col.index = col.index.strftime('%m/%Y')
         return col
+
     except Exception as e:
         print('problem getting col: AC ' + str(e))
