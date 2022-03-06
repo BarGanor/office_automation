@@ -112,3 +112,36 @@ def cols_ac_pdata():
 
     except Exception as e:
         print('problem getting col: AC ' + str(e))
+
+
+def col_ap_pdata():
+    try:
+        url = 'https://fred.stlouisfed.org/graph/fredgraph.xls?bgcolor=%23e1e9f0&chart_type=line&drp=0&fo=open%20sans&graph_bgcolor=%23ffffff&height=450&mode=fred&recession_bars=on&txtcolor=%23444444&ts=12&tts=12&width=1168&nt=0&thu=0&trc=0&show_legend=yes&show_axis_titles=yes&show_tooltip=yes&id=SPCS10RSA&scale=left&cosd=1987-01-01&coed=2099-12-01&line_color=%234572a7&link_values=false&line_style=solid&mark_type=none&mw=3&lw=2&ost=-99999&oet=99999&mma=0&fml=a&fq=Monthly&fam=avg&fgst=lin&fgsnd=2020-02-01&line_index=1&transformation=lin&vintage_date=2099-03-06&revision_date=2099-03-06&nd=1987-01-01'
+        resp = requests.get(url)
+        df = pd.read_excel(resp.content,index_col=0)
+        df = df.iloc[15:,].dropna(how='all')
+        df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+        df.columns =['S&P/Case-Shiller 10-City Composite Home Price Index']
+
+        return df
+    except Exception as e:
+        print('problem getting cols: AP: ' +str(e))
+
+
+def col_aw_pdata():
+    try:
+        curr_year = date.today().year
+        df = pd.DataFrame()
+
+        for year in range(curr_year-4,curr_year+1,1):
+            url = f'https://www.gov.il/BlobFolder/generalpage/fuel_price_historycal/he/stationprice{year}.xlsx'
+            resp = requests.get(url)
+            col = pd.read_excel(resp.content,index_col=0,header=5)
+            col = col.dropna(how='all').loc[:,"בנזין 95 אוקטן נטול עופרת"]
+            col.index = pd.to_datetime(col.index).strftime('%m/%Y')
+            df = pd.concat([df, col], axis=0)
+        df.columns = ["בנזין 95 אוקטן נטול עופרת"]
+
+        return df
+    except Exception as e:
+        print('problem getting cols: AW: ' +str(e))

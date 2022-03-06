@@ -137,7 +137,9 @@ def get_pdata_monthly(record_num):
     function_dict = {'G-T': cols_g_to_t_pdata(),
                      'AA': col_aa_pdata(),
                      'AB': col_ab_pdata(),
-                     'AC': cols_ac_pdata()}
+                     'AC': cols_ac_pdata(),
+                     'AP': col_ap_pdata(),
+                     'AW': col_aw_pdata()}
 
     df = pd.DataFrame()
 
