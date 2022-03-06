@@ -92,3 +92,22 @@ def col_ab_pdata():
         return df
     except Exception as e:
         print('problem getting cols: ABb ' + str(e))
+
+
+def cols_ac_pdata():
+    try:
+        url = f'https://api.cbs.gov.il/index/data/price?id=40010&format=json&download=false'
+        resp = requests.get(url).json()
+        data = resp['month'][0]['date']
+        col = pd.DataFrame.from_records(data)
+        col['מדד מחירי דירות (1993 = 100) - אמצע התקופה הנסקרת'] = col['currBase'].apply(pd.Series).value
+        col['Date'] =  col['month'].map(str) + '/' + col['year'].map(str)
+        col = col[['Date','מדד מחירי דירות (1993 = 100) - אמצע התקופה הנסקרת']]
+        col = col.set_index('Date')
+
+        col.index = pd.to_datetime(col.index)
+        col = col.sort_index()
+        col.index = col.index.strftime('%m/%Y')
+        return col
+    except Exception as e:
+        print('problem getting col: AC ' + str(e))
