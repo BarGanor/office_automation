@@ -104,6 +104,7 @@ def get_ldata_monthly(record_num):
     df.index = pd.to_datetime(df.index, format="%m/%Y")
     df = df.sort_index()
     df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    df = df.dropna(how='all')
     return df.iloc[-record_num:]
 
 
