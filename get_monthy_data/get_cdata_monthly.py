@@ -165,11 +165,12 @@ def cols_t_to_v():
     try:
         url = 'https://www.boi.org.il/Lists/BoiChapterTablesFiles/n110.xls'
         resp = requests.get(url)
-        df = pd.read_excel(resp.content, index_col=-14)
-        df = df.iloc[:, -16:-13]
+        df = pd.read_excel(resp.content, index_col=-1)
+        df = df.iloc[:, -3:]
         df = df.dropna().iloc[3:50, :]
         df = df.sort_index()
         df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+
         df = df[df.columns[::-1]]
         df.columns = ['סכום האשראי בריבית קבועה Amount of credit at fixed interest',
                       'סכום האשראי בריבית משתנה Amount of credit at variable interest',
