@@ -7,6 +7,7 @@ from get_monthy_data.get_edata_monthly import *
 from get_monthy_data.get_xdata_monthly import *
 from get_monthy_data.get_ldata_nomthly import *
 from get_monthy_data.get_rdata_monthly import *
+from get_monthy_data.get_mdata_monthly import *
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -158,6 +159,28 @@ def get_pdata_monthly(record_num):
     return df.iloc[-record_num:]
 
 
+def get_mdata_monthly(record_num):
+    print('Getting M_Data')
+    function_dict = {'I': col_i_mdata(),
+                     'J': col_j_mdata(),
+                     'AT_AV': col_at_and_av_mdata()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for mdata.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
 def get_ftdata_monthly(record_num):
     print('Getting FT_Data')
     function_dict = {'C-BI': cols_c_to_bi_rdata(),
@@ -185,6 +208,7 @@ def get_monthly_data(record_num):
     func_dict = {'cdata': get_cdata_monthly(record_num), 'ftdata': get_ftdata_monthly(record_num),
                  'edata': get_edata_monthly(record_num), 'xdata': get_xdata_monthly(record_num),
                  'ldata': get_ldata_monthly(record_num), 'pdata': get_pdata_monthly(record_num),
-                 'rdata': get_rdata_monthly(record_num)}
+                 'rdata': get_rdata_monthly(record_num),
+                 'mdata': get_mdata_monthly(record_num)}
 
     return func_dict
