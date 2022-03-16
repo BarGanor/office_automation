@@ -111,41 +111,6 @@ def cols_c_to_bi_rdata():
         print('problem getting col: C-BI ' + str(e))
 
 
-def col_x_aa_ftdata():
-    try:
-        curr_year = date.today().year
-        curr_month = date.today().month
-        one_months_ago = (datetime.today() + relativedelta(months=-2)).month
-        one_months_ago_name = (datetime.today() + relativedelta(months=-2)).strftime("%B")
-        number_for_iloc = 16 + 12 + one_months_ago
-
-        url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_AA_ftdata(curr_year, one_months_ago_name)}/16_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_AA_ftdata(curr_year, one_months_ago_name)}t15.xls'
-        resp = requests.get(url)
-        df = pd.read_excel(resp.content).dropna(how='all', axis=1).dropna(how='all', axis=0).iloc[16:number_for_iloc, :]
-        for i in range(0, 12, 1):
-            df.iloc[i, 0] = curr_year - 1
-        df = df.bfill(axis=1)
-        df['date'] = df['Unnamed: 1'].map(str) + '/' + df['Unnamed: 0'].map(str)
-        df.index = df['date']
-        index_col = []
-        for i in df.index:
-            d = i.split("/")
-            d2 = d[0].split()[0]
-            e = d2.replace(d2, str(get_key_by_value(d2)))
-            r = e + "/" + d[1]
-            index_col.append(r)
-
-        df.index = index_col
-        df['כרייה וחציבה ומינרליים אל מתכתיים- מקורי'] = df['Unnamed: 12'] + df['Unnamed: 20']
-        df['כימיקליים וזיקוק נפט- מקורי'] = df['Unnamed: 9'] + df['Unnamed: 14']
-
-        df = df.loc[:, ['כימיקליים וזיקוק נפט- מקורי', 'כרייה וחציבה ומינרליים אל מתכתיים- מקורי']]
-        return df
-
-    except Exception as e:
-        print('problem getting cols: X-AA ' + str(e))
-
-
 def col_X_AA_ES_EM_ftdata():
     try:
         curr_year = date.today().year
@@ -182,6 +147,42 @@ def col_X_AA_ES_EM_ftdata():
 
     except Exception as e:
         print('problem getting cols: X,AA,ES,EM ' + str(e))
+
+
+def col_ag_am_ftdata():
+    try:
+        curr_year = date.today().year
+        curr_month = date.today().month
+        one_months_ago = (datetime.today() + relativedelta(months=-2)).month
+        one_months_ago_name = (datetime.today() + relativedelta(months=-2)).strftime("%B")
+        number_for_iloc = 30 + 12 + one_months_ago
+
+        url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_AA_ftdata(curr_year, one_months_ago_name)}/16_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_AA_ftdata(curr_year, one_months_ago_name)}t15.xls'
+        resp = requests.get(url)
+        df = pd.read_excel(resp.content).dropna(how='all', axis=1).dropna(how='all', axis=0).iloc[30:number_for_iloc,
+             :].dropna(how='all', axis=1)
+        for i in range(0, 12, 1):
+            df.iloc[i, 0] = curr_year - 1
+        df = df.bfill(axis=1)
+        df['date'] = df['Unnamed: 1'].map(str) + '/' + df['Unnamed: 0'].map(str)
+        df.index = df['date']
+        index_col = []
+        for i in df.index:
+            d = i.split("/")
+            d2 = d[0].split()[0]
+            e = d2.replace(d2, str(get_key_by_value(d2)))
+            r = e + "/" + d[1]
+            index_col.append(r)
+
+        df.index = index_col
+        df['תעשיית מתכות בסיסיות (24)'] = df['Unnamed: 11']
+        df['יצור תכשיטים יקרים, תכשיטים מלאכותיים ופריטים דומים'] = df['Unnamed: 15']
+
+        df = df.loc[:, ['תעשיית מתכות בסיסיות (24)', 'יצור תכשיטים יקרים, תכשיטים מלאכותיים ופריטים דומים']]
+        return df
+
+    except Exception as e:
+        print('problem getting cols: X-AA ' + str(e))
 
 
 def col_bp_ce_ftdata():

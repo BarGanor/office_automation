@@ -184,7 +184,7 @@ def get_mdata_monthly(record_num):
 def get_ftdata_monthly(record_num):
     print('Getting FT_Data')
     function_dict = {'C-BI': cols_c_to_bi_rdata(),
-                     'X-AA': col_x_aa_ftdata(),
+                     'X-AA': col_X_AA_ES_EM_ftdata(),
                      'AG-AM': col_ag_am_ftdata(),
                      'BP-CE': col_bp_ce_ftdata(),
                      'CB': col_cb_ftdata(),
