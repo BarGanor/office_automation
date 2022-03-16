@@ -1,7 +1,46 @@
 import pandas as pd
 import requests
-from datetime import date
 from dateutil.relativedelta import relativedelta
+from datetime import datetime, date, timedelta
+from bs4 import BeautifulSoup
+
+
+#פונקציות נצרכות לפונקציות הבאות
+def get_message_number_exports(year,monthName):
+    curr_year = date.today().year
+    curr_month = date.today().month
+    two_months_ago_name = (datetime.today() + relativedelta(months=-2)).strftime("%B")
+
+    if monthName in ['December','November']:
+        url = f'https://www.cbs.gov.il/en/mediarelease/Pages/{curr_year}/Exports-of-Services-{monthName}-{year}.aspx'
+    else:
+        url = f'https://www.cbs.gov.il/en/mediarelease/Pages/{year}/Exports-of-Services-{monthName}-{year}.aspx'
+
+    resp = requests.get(url)
+    soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+    tags = soup.find(class_="articleDetails")
+    br_tags = tags.text.strip().split()
+    message_number = br_tags[3].split("/")[0]
+    return message_number
+
+def get_curr_year_list_2_digit(year):
+    curr_year = date.today().year
+    list_of_numbers = list(str(year))
+    curr_year_list_2_digit = list_of_numbers[2] + list_of_numbers[3]
+    return curr_year_list_2_digit
+
+def get_roman_number(number):
+    roman_month = {1: 'I',2:'II',3:'III' ,4:'IV' ,5:'V' ,6:'VI' ,7:'VII' ,8:'VIII' ,9:'IX' ,10:'X' ,11:'XI' ,12:'XII'}
+    return roman_month.get(number)
+
+
+def get_key_by_value(roman_number):
+    roman_month = {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V',
+                   6: 'VI', 7: 'VII', 8: 'VIII', 9: 'IX', 10: 'X', 11:'XI',
+                   12 :'XII'}
+    return [name for name, age in roman_month.items() if age == roman_number][0]
+
+######
 
 
 def cols_c_to_bi_rdata():
@@ -53,6 +92,67 @@ def cols_c_to_bi_rdata():
         return df
     except Exception as e:
         print('problem getting col: C-BI ' + str(e))
+
+
+def col_bp_ce_ftdata():
+    try:
+        curr_year = date.today().year
+
+        curr_month = date.today().month
+        two_months_ago = (datetime.today() + relativedelta(months=-3)).month
+        two_months_ago_name = (datetime.today() + relativedelta(months=-3)).strftime("%B")
+        if two_months_ago_name in ['December', 'November']:
+            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_exports(curr_year - 1, two_months_ago_name)}/09_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_exports(curr_year - 1, two_months_ago_name)}t1.xlsx'
+            resp = requests.get(url)
+            df = pd.read_excel(resp.content,header=5).dropna(how='all', axis=1).dropna(how='all', axis=0)
+            df['Year'] = df['Year'].ffill()
+            df = df.dropna(how='any', axis=0)
+            df = df.bfill(axis=1)
+            df['date'] = df['Month'].map(str) + '/' + df['Year'].map(str)
+            df.index = df['date']
+            index_col = []
+            for i in df.index:
+                d = i.split("/")
+                if d[1].isnumeric():
+                    e = d[0].replace(d[0], str(get_key_by_value(d[0])))
+                    r = e + "/" + d[1]
+                    index_col.append(r)
+                else:
+                    d[1] = d[1].replace('*', "")
+                    e = d[0].replace(d[0], str(get_key_by_value(d[0])))
+                    r = e + "/" + d[1]
+                    index_col.append(r)
+            df.index = index_col
+            df = df.iloc[:,[3,10,22,25,18,2,9,21,24,17,4,5]]
+            df.columns = ['סה"כ יצוא שירותים- מנוכה','יצוא שירותים עסקיים (לא כולל חברות הזנק)','שירותי תחבורה (סה"כ) - מנוכה','יצוא שירותי תיירות - מנוכה','סה"כ יצוא שירותים - מקורי','יצוא שירותים עסקיים (לא כולל חברות הזנק) - מקורי','שירותי תחבורה (סה"כ) - מקורי','יצוא שירותי תיירות - מקורי','סה"כ ללא חברות הזנק - מקורי','סה"כ ללא חברות הזנק - מנוכה','יצוא סחורות ושירותים - מנוכה','יצוא סחורות ושירותים - מקורי']
+            return df
+        else:
+            url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_exports(curr_year - 1, two_months_ago_name)}/09_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_exports(curr_year - 1, two_months_ago_name)}t1.xlsx'
+            resp = requests.get(url)
+            df = pd.read_excel(resp.content,header=5).dropna(how='all', axis=1).dropna(how='all', axis=0)
+            df['Year'] = df['Year'].ffill()
+            df = df.dropna(how='any', axis=0)
+            df = df.bfill(axis=1)
+            df['date'] = df['Month'].map(str) + '/' + df['Year'].map(str)
+            df.index = df['date']
+            index_col = []
+            for i in df.index:
+                d = i.split("/")
+                if d[1].isnumeric():
+                    e = d[0].replace(d[0], str(get_key_by_value(d[0])))
+                    r = e + "/" + d[1]
+                    index_col.append(r)
+                else:
+                    d[1] = d[1].replace('*', "")
+                    e = d[0].replace(d[0], str(get_key_by_value(d[0])))
+                    r = e + "/" + d[1]
+                    index_col.append(r)
+            df.index = index_col
+            df = df.iloc[:,[3,10,22,25,18,2,9,21,24,17,4,5]]
+            df.columns = ['סה"כ יצוא שירותים- מנוכה','יצוא שירותים עסקיים (לא כולל חברות הזנק)- מנוכה','שירותי תחבורה (סה"כ) - מנוכה','יצוא שירותי תיירות - מנוכה','סה"כ יצוא שירותים - מקורי','יצוא שירותים עסקיים (לא כולל חברות הזנק) - מקורי','שירותי תחבורה (סה"כ) - מקורי','יצוא שירותי תיירות - מקורי','סה"כ ללא חברות הזנק - מקורי','סה"כ ללא חברות הזנק - מנוכה','יצוא סחורות ושירותים - מנוכה','יצוא סחורות ושירותים - מקורי']
+            return df
+    except Exception as e:
+        print('problem getting cols: BP-CE ' + str(e))
 
 
 def col_cb_ftdata():
