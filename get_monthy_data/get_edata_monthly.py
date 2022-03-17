@@ -90,6 +90,8 @@ def col_z_aa_edata():
                 r = e + "/" + d[1]
                 index_col.append(r)
         df.index = index_col
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
         return df
     except Exception as e:
         print('problem getting cols: Z-AA ' + str(e))
@@ -125,6 +127,8 @@ def col_ab_ac_edata():
                 r = d[0] + "/" + d[1]
                 index_col.append(r)
         df.index = index_col
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
         return df
     except Exception as e:
         print('problem getting cols: AB-AC ' + str(e))

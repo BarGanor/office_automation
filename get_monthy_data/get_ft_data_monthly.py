@@ -149,6 +149,8 @@ def col_X_AA_ES_EM_ftdata():
         df['מתכות בסיסיות (עמודה EM)'] = df['Unnamed: 11']
         df = df.loc[:, ['תעשיית מתכות בסיסיות (24)', 'יצור תכשיטים יקרים, תכשיטים מלאכותיים ופריטים דומים',
                         'תכשיטים- מנוכה עונתיות (עמודה ES)', 'מתכות בסיסיות (עמודה EM)']]
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
         return df
 
     except Exception as e:
@@ -185,6 +187,8 @@ def col_ag_am_ftdata():
         df['יצור תכשיטים יקרים, תכשיטים מלאכותיים ופריטים דומים'] = df['Unnamed: 15']
 
         df = df.loc[:, ['תעשיית מתכות בסיסיות (24)', 'יצור תכשיטים יקרים, תכשיטים מלאכותיים ופריטים דומים']]
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
         return df
 
     except Exception as e:
@@ -194,9 +198,6 @@ def col_ag_am_ftdata():
 def col_bp_ce_ftdata():
     try:
         curr_year = date.today().year
-
-        curr_month = date.today().month
-        two_months_ago = (datetime.today() + relativedelta(months=-3)).month
         two_months_ago_name = (datetime.today() + relativedelta(months=-3)).strftime("%B")
         if two_months_ago_name in ['December', 'November']:
             url = f'https://www.cbs.gov.il/he/mediarelease/doclib/{curr_year}/{get_message_number_exports(curr_year - 1, two_months_ago_name)}/09_{get_curr_year_list_2_digit(curr_year)}_{get_message_number_exports(curr_year - 1, two_months_ago_name)}t1.xlsx'
@@ -221,6 +222,8 @@ def col_bp_ce_ftdata():
                     index_col.append(r)
             df.index = index_col
             df = df.iloc[:,[3,10,22,25,18,2,9,21,24,17,4,5]]
+            df.index = pd.to_datetime(df.index)
+            df.index = df.index.strftime('%m/%Y')
             df.columns = ['סה"כ יצוא שירותים- מנוכה','יצוא שירותים עסקיים (לא כולל חברות הזנק)','שירותי תחבורה 1 - מנוכה','שירותי תחבורה 2 - מנוכה','יצוא שירותי תיירות - מנוכה','סה"כ יצוא שירותים - מקורי','יצוא שירותים עסקיים (לא כולל חברות הזנק) - מקורי','שירותי תחבורה (1) - מקורי','שירותי תחבורה (2) - מקורי','יצוא שירותי תיירות - מקורי','סה"כ ללא חברות הזנק - מקורי','סה"כ ללא חברות הזנק - מנוכה']
             return df
         else:
@@ -247,6 +250,8 @@ def col_bp_ce_ftdata():
             df.index = index_col
             df = df.iloc[:,[3,10,22,25,18,2,9,21,24,17,4,5]]
             df.columns = ['סה"כ יצוא שירותים- מנוכה','יצוא שירותים עסקיים (לא כולל חברות הזנק)','שירותי תחבורה 1 - מנוכה','שירותי תחבורה 2 - מנוכה','יצוא שירותי תיירות - מנוכה','סה"כ יצוא שירותים - מקורי','יצוא שירותים עסקיים (לא כולל חברות הזנק) - מקורי','שירותי תחבורה (1) - מקורי','שירותי תחבורה (2) - מקורי','יצוא שירותי תיירות - מקורי','סה"כ ללא חברות הזנק - מקורי','סה"כ ללא חברות הזנק - מנוכה']
+            df.index = pd.to_datetime(df.index)
+            df.index = df.index.strftime('%m/%Y')
             return df
     except Exception as e:
         print('problem getting cols: BP-CE ' + str(e))
