@@ -75,7 +75,7 @@ def col_z_aa_edata():
         df['date'] = df['Unnamed: 2'].map(str) + '/' + df['TABLE 2. TOURIST ARRIVALS IN ISRAEL (1)'].map(str)
         df.index = df['date']
         df = df.loc[f'I/{curr_year - 2}':f'{get_roman_number(two_months_ago)}/{curr_year}*',
-             ['Unnamed: 7', 'Unnamed: 4']]
+             ['Unnamed: 4', 'Unnamed: 7']]
         df = df.rename({'Unnamed: 4': 'אלפי תיירים, מנוכה עונתיות', 'Unnamed: 7': 'מקורי'}, axis=1)
         index_col = []
         for i in df.index:
