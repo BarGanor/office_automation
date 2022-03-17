@@ -115,7 +115,7 @@ def col_ab_ac_edata():
         df['date'] = df[13].map(str) + '/' + df[14].map(str)
         df.index = df['date']
         df = df.iloc[:, [7, 6]]
-        df = df.rename({8: 'אלפי תיירים - מנוכה עונתיות', 7: 'אלפי ישראלים - מנוכה עונתיות'}, axis=1)
+        df = df.rename({8: 'לילות בבתי מלון - אלפי תיירים - מנוכה עונתיות', 7: 'לילות בבתי מלון - אלפי ישראלים - מנוכה עונתיות'}, axis=1)
         index_col = []
         for i in df.index:
             d = i.split("/")
