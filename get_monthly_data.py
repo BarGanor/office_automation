@@ -161,7 +161,8 @@ def get_pdata_monthly(record_num):
 
 def get_mdata_monthly(record_num):
     print('Getting M_Data')
-    function_dict = {'I': col_i_mdata(),
+    function_dict = {'F': cols_f_mdata(),
+                     'I': col_i_mdata(),
                      'J': col_j_mdata(),
                      'AT_AV': col_at_and_av_mdata()}
 

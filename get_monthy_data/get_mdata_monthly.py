@@ -8,6 +8,24 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 
 
+def cols_f_mdata():
+    try:
+        url = 'https://www.boi.org.il/en/DataAndStatistics/Pages/Indicators.aspx?Level=1&IndicatorId=2&Sid=2'
+        resp = requests.get(url)
+        soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
+        table = soup.find("table").prettify()
+        df = pd.read_html(table, index_col=1)[0].dropna( how='all')
+        df = df.loc["Bank of Israel interest rate",:]
+        df = df.iloc[1:]
+        df.index = [datetime.strptime(x,'%b-%y').strftime('%m/%Y') for x in df.index]
+        df.index = pd.to_datetime(df.index)
+        df.index = df.index.strftime('%m/%Y')
+        return df
+
+    except Exception as e:
+        print('problem getting col: F ' + str(e))
+
+
 def col_i_mdata():
     try:
         url = f'https://www.boi.org.il/he/DataAndStatistics/Lists/BoiTablesAndGraphs/shcf10_h.xls'
