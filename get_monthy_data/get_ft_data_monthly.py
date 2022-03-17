@@ -20,7 +20,10 @@ def get_message_number_exports(year,monthName):
     soup = BeautifulSoup(resp.content.decode('utf-8'), features='lxml')
     tags = soup.find(class_="articleDetails")
     br_tags = tags.text.strip().split()
+
     message_number = br_tags[3].split("/")[0]
+    if 'q' in message_number:
+        message_number = br_tags[3].split('q')[0]
     return message_number
 
 
@@ -37,6 +40,9 @@ def get_message_number_AA_ftdata(year,monthName):
     tags = soup.find(class_="articleDetails")
     br_tags = tags.text.strip().split()
     message_number = br_tags[3].split("/")[0]
+    if 'q' in message_number:
+        message_number = br_tags[3].split('q')[0]
+
     return message_number
 
 
