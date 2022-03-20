@@ -234,6 +234,7 @@ def get_monthly_data(record_num):
                  'edata': get_edata_monthly(record_num), 'xdata': get_xdata_monthly(record_num),
                  'ldata': get_ldata_monthly(record_num), 'pdata': get_pdata_monthly(record_num),
                  'rdata': get_rdata_monthly(record_num),
-                 'mdata': get_mdata_monthly(record_num)}
+                 'mdata': get_mdata_monthly(record_num),
+                 'fdata': get_fdata_monthly(record_num)}
 
     return func_dict
