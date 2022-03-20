@@ -146,3 +146,14 @@ def cols_t_to_v():
         return df
     except Exception as e:
         print('problem getting cols: T-V: ' + str(e))
+
+#####################
+
+
+import camelot
+
+file = "https://www.gov.il/BlobFolder/dynamiccollectorresultitem/weekly_prices_report_10_march_2022/he/weekly_prices_weekly%20prices%20report_10_mar_2022.pdf"
+tables = camelot.read_pdf(file)
+print(tables[0].df)
+
+

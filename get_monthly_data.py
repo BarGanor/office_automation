@@ -1,4 +1,5 @@
 from pandas import ExcelWriter
+from get_monthy_data.get_fdata_monthly import *
 
 from get_monthy_data.get_pdata_monthly import *
 from get_monthy_data.get_cdata_monthly import *
@@ -174,6 +175,26 @@ def get_mdata_monthly(record_num):
             df = pd.concat([df, cols_df], axis=1)
         except Exception as e:
             print('There was a problem concatenating columns:' + cols + ' for mdata.')
+            print('The error: ' + str(e))
+
+    df.index = pd.to_datetime(df.index, format="%m/%Y")
+    df = df.sort_index()
+    df.index = pd.to_datetime(df.index).strftime('%m/%Y')
+    return df.iloc[-record_num:]
+
+
+def get_fdata_monthly(record_num):
+    print('Getting F_Data')
+    function_dict = {'C-E': cols_c_to_e_fdata()}
+
+    df = pd.DataFrame()
+
+    for cols in function_dict.keys():
+        try:
+            cols_df = function_dict.get(cols)
+            df = pd.concat([df, cols_df], axis=1)
+        except Exception as e:
+            print('There was a problem concatenating columns:' + cols + ' for fdata.')
             print('The error: ' + str(e))
 
     df.index = pd.to_datetime(df.index, format="%m/%Y")
