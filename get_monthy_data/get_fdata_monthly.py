@@ -44,7 +44,7 @@ def cols_c_to_e_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             df = df.loc[['עודף (+) / גירעון (-) למימון', 'עודף (+) / גירעון (-) ללא מתן אשראי נטו', 'סה"כ הכנסות']]
             today = date.today()
             col_names = []
@@ -130,7 +130,7 @@ def cols_f_to_j_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             new_index = []
             for index in df.index:
                 index = index.split()
@@ -221,7 +221,7 @@ def cols_k_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             new_index = []
             for index in df.index:
                 index = index.split()
@@ -314,7 +314,7 @@ def cols_l_to_y_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             new_index = []
             for index in df.index:
                 index = index.split()
@@ -403,7 +403,7 @@ def cols_aa_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             new_index = []
             for index in df.index:
                 index = index.split()
@@ -502,7 +502,7 @@ def cols_ab_fdata():
             #     url = url_2028
 
             resp = requests.get(url)
-            df = pd.read_excel(resp.content, index_col=0).dropna(how='all')
+            df = pd.read_excel(resp.content, engine='openpyxl', index_col=0).dropna(how='all')
             new_index = []
             for index in df.index:
                 index = index.split()
