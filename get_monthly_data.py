@@ -185,7 +185,12 @@ def get_mdata_monthly(record_num):
 
 def get_fdata_monthly(record_num):
     print('Getting F_Data')
-    function_dict = {'C-E': cols_c_to_e_fdata()}
+    function_dict = {'C-E': cols_c_to_e_fdata(),
+                     'F-J': cols_f_to_j_fdata(),
+                     'K': cols_k_fdata(),
+                     'L-Y': cols_l_to_y_fdata(),
+                     'AA': cols_aa_fdata(),
+                     'AB': cols_ab_fdata()}
 
     df = pd.DataFrame()
 
