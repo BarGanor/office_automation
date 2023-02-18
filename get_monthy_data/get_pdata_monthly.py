@@ -102,7 +102,7 @@ def cols_ac_pdata():
         col = pd.DataFrame.from_records(data)
         col['מדד מחירי דירות (1993 = 100) - אמצע התקופה הנסקרת'] = col['currBase'].apply(pd.Series).value
         col['Date'] =  col['month'].map(str) + '/' + col['year'].map(str)
-        col = col[['Date','מדד מחירי דירות (1993 = 100) - אמצע התקופה הנסקרת']]
+        col = col[['Date', 'מדד מחירי דירות (1993 = 100) - אמצע התקופה הנסקרת']]
         col = col.set_index('Date')
 
         col.index = pd.to_datetime(col.index)

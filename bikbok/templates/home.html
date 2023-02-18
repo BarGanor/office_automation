@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wine Price Calculator</title>
+  </head>
+  <body>
+    <h1>Wine Price Calculator</h1>
+    <form action="/result" method="POST" enctype="multipart/form-data">
+      <label for="file">Excel file:</label>
+      <input type="file" id="file" name="file"><br><br>
+      <label for="price">Price per bottle:</label>
+      <input type="text" id="price" name="price"><br><br>
+      <label for="magnum_price">Price per magnum:</label>
+      <input type="text" id="magnum_price" name="magnum_price"><br><br>
+      <label for="mishtachim_price">Price per mishtachim:</label>
+      <input type="text" id="mishtachim_price" name="mishtachim_price"><br><br>
+      <label for="karton_price">Price per karton:</label>
+      <input type="text" id="karton_price" name="karton_price"><br><br>
+      <label for="maarach_price">Price per maarach:</label>
+      <input type="text" id="maarach_price" name="maarach_price"><br><br>
+      <label for="month">month name:</label>
+      <input type="text" id="month" name="month"><br><br>
+      <label for="winery">Winery name:</label>
+      <input type="text" id="winery" name="winery"><br><br>
+      <input type="submit" value="Calculate">
+    </form>
+  </body>
+</html>

@@ -243,3 +243,8 @@ def get_monthly_data(record_num):
                  'fdata': get_fdata_monthly(record_num)}
 
     return func_dict
+
+
+save_xls(get_monthly_data(record_num=12),'monthly_data.xlsx')
+input("Press enter to close program")
+

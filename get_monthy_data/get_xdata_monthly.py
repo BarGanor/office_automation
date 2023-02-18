@@ -84,7 +84,7 @@ def col_i_to_k_xdata():
 
         return df3
     except Exception as e:
-        print('problem getting cols: I-K' + str(e))
+        print('problem getting cols: I-K ' + str(e))
 
 
 def col_l_to_n():
